@@ -1,9 +1,15 @@
 
+
+
+
+
 var control=angular.module('starter.controllers', [])
 var findloginornot=0;
 var stopforloop=0;
 var findbuttonclick=0;
 var getparticularbuttonsvar=0;
+//localStorage.appkey="ab36a060ef83bd18f575ad0c3bde5dd4"
+//var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
 control.filter('capitalize', function() {
            return function(input, all) {
            return (!!input) ? input.replace(/([^\W_]+[^\s-]*) */g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}) : '';
@@ -30,7 +36,28 @@ control.directive('resize', function () {
            };
            
            });
-control.controller('LoginCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal) {
+           
+control.directive('dynamicUrl', function () {
+    return {
+        restrict: 'A',
+        link: function postLink(scope, element, attr) {
+            element.attr('src', attr.dynamicUrlSrc);
+        }
+    };
+});           
+ 
+app.filter('ellipsis', function () {
+    return function (text, length) {
+   
+        if (text.length > length) {
+            return text.substr(0, length) + "....";
+        }
+        return text;
+    }
+});
+ 
+           
+control.controller('LoginCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicPopup) {
                   
                    var findapp;
                    $scope.loginvalues={};
@@ -43,6 +70,32 @@ control.controller('LoginCtrl', function($scope, $state, $rootScope, $ionicPopov
                    
                    $scope.login = function()
                    {
+                   
+                   
+                   if($scope.loginvalues.username==undefined || $scope.loginvalues.password==undefined)
+                   {
+                   	        var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Check Username or Password'
+   									});
+   									alertPopup.then(function(res) {
+     
+   									});
+                   }
+                   else if($scope.loginvalues.username=="" || $scope.loginvalues.password=="")
+                   {
+                          var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Check Username or Password'
+   									});
+   									alertPopup.then(function(res) {
+     
+   									});
+                   }
+                   else
+                   {
+                   
+                   
                    
                    $ionicLoading.show({
                                       template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
@@ -91,6 +144,10 @@ control.controller('LoginCtrl', function($scope, $state, $rootScope, $ionicPopov
                             {
                             $state.go('imageswithdescriptionlistpage');
                             }
+                            else if($rootScope.findpagefromlogin=="Bible quotes")
+                            {
+                            $state.go('biblequotespage');
+                            }
                             else if($rootScope.findpagefromlogin=="Images")
                             {
                             $state.go('imagespage');
@@ -99,7 +156,10 @@ control.controller('LoginCtrl', function($scope, $state, $rootScope, $ionicPopov
                             {
                             $state.go('videowithdescriptionpage');
                             }
-                            
+                            else if($rootScope.findpagefromlogin=="Donation")
+                   			{
+                   			$state.go('donationpage');
+                   			}
                             else
                             {
                             $state.go('home');
@@ -186,21 +246,29 @@ control.controller('LoginCtrl', function($scope, $state, $rootScope, $ionicPopov
                             })
                    .error(function(data, status) {
                           
-                          
-                         
                           $ionicLoading.hide();
+                          var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: data.error
+   									});
+   									alertPopup.then(function(res) {
+     
+   									});
                           
                           
                           });
                    
-                   
+                   }
                    
                    
                    }
                    
 
                  
-                  
+                  $scope.backlogin=function()
+                    {
+                       $state.go('home');     
+                    }
                   
                    
                    
@@ -213,7 +281,7 @@ control.controller('LoginCtrl', function($scope, $state, $rootScope, $ionicPopov
                    
                    
                    
-                   control.controller('appcreateCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal) {
+    control.controller('appcreateCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicPopup) {
                    
                    var findapp;
                    $scope.loginvalues={};
@@ -225,6 +293,43 @@ control.controller('LoginCtrl', function($scope, $state, $rootScope, $ionicPopov
                    $scope.login = function()
                    {
                    
+                   
+                   if($scope.loginvalues.appname==undefined || $scope.loginvalues.appname=="")
+                   {
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Enter the application name'
+   									});
+   									alertPopup.then(function(res) {
+     
+   									});
+                   }
+                   
+                   else if($scope.loginvalues.username==undefined || $scope.loginvalues.username=="")
+                   {
+                   //navigator.notification.alert("Please Check above fields", function(){}, 'Church', 'OK' );
+                   
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Enter the username'
+   									});
+   									alertPopup.then(function(res) {
+     
+   									});
+                   }
+                   else if($scope.loginvalues.password==undefined || $scope.loginvalues.password=="")
+                   {
+                          var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Enter the password"'
+   									});
+   									alertPopup.then(function(res) {
+     
+   									});
+                   }
+                   
+                   else
+                   {
                    $ionicLoading.show({
                                       template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
                                       });
@@ -238,30 +343,22 @@ control.controller('LoginCtrl', function($scope, $state, $rootScope, $ionicPopov
                             
                             
                             $scope.sessionkey=data.api_key;
-                            
                             $ionicLoading.hide();
-                            
-                            
                             $scope.ifnoapp();
-                        
-
-                            
-                            
-                            
-                            
-                            
-                            
                             })
                    .error(function(data, status) {
-                          
-                          
-                          
-                          $ionicLoading.hide();
-                          
+                            $ionicLoading.hide();
+                            var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: data.error
+   									});
+   									alertPopup.then(function(res) {
+     
+   									});
                           
                           });
                    
-                   
+                   }
                    
                    
                    }
@@ -282,8 +379,52 @@ control.controller('LoginCtrl', function($scope, $state, $rootScope, $ionicPopov
                    .success(function(data, status, headers, config) {
                             $scope.appkey=data.api_key;
                             
-                            navigator.notification.alert(data.api_key, function(){$state.go('home');}, 'APP KEY', 'OK' );
+                           // navigator.notification.alert(data.api_key, function(){$state.go('home');}, 'APP KEY', 'OK' );
                             
+                            
+                          // db.transaction(populateDB, errorCB, successCB);
+
+    
+    function populateDB(tx) {
+        tx.executeSql('CREATE TABLE IF NOT EXISTS APIKEY (id unique, appkey)');
+       // tx.executeSql('INSERT INTO APIKEY (id, appkey) VALUES (1, "'+$scope.appkey+'")');
+       tx.executeSql('UPDATE APIKEY SET appkey = "' + $scope.appkey + '"');
+    }
+
+  
+//     function queryDB(tx) {
+//         tx.executeSql('SELECT * FROM APIKEY', [], querySuccess, errorCB);
+//     }
+// 
+//    
+//     function querySuccess(tx, results) {
+//   		alert("Returned rows = " + results.rows.length);
+//     }
+
+
+    function errorCB(err) {
+        alert("Error processing SQL: "+err.code);
+    }
+
+
+    function successCB() {
+    localStorage.findappkeyfromcreate=1;
+    
+        // var db = window.openDatabase("Database", "1.0", "Cordova Demo", 200000);
+//         db.transaction(queryDB, errorCB);
+    }
+                            
+                            
+                            
+                            
+                            var alertPopup = $ionicPopup.alert({
+     								title: 'App Key',
+     								template: data.api_key
+   									});
+   									alertPopup.then(function(res) {
+   									$rootScope.buttoncontent="";
+									$state.go('home');
+   									});
                             
                             
                             $ionicLoading.hide();
@@ -306,7 +447,45 @@ control.controller('LoginCtrl', function($scope, $state, $rootScope, $ionicPopov
 
 control.controller('HomeCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicPopup, $ionicActionSheet, $ionicSlideBoxDelegate) {
                    
+   
+    
+       			
+  
+         	
+        	//db.transaction(queryDB, errorCB);
+                function queryDB(tx) {
+                tx.executeSql('SELECT * FROM APIKEY', [], querySuccess, errorCB);
+    			}
+
+   
+    			function querySuccess(tx, results) {
+  					
+  					localStorage.appkey=results.rows.item(0).appkey;
+  					//alert("select = " + localStorage.appkey);
+  					getallbuttons();
+    			}
+
+
+    			function errorCB(err) {
+    			getallbuttons();
+        			//alert("Error processing SQL select: "+err.code);
+    			}
+
+
+    
+       
+    
+           
+                 
                   
+var viewport = {
+    width  : $(window).width(),
+    height : $(window).height()
+};
+                  
+       
+       
+      $rootScope.devicewidth =viewport.width;
                    
                    if($rootScope.mainbuttontitle)
                    {
@@ -317,16 +496,17 @@ control.controller('HomeCtrl', function($scope, $state, $rootScope, $ionicPopove
                    $rootScope.mainbuttontitle="Church"
                    }
                    
-                   $scope.tinymceOptions = {
+	$scope.tinymceOptions = {
                    menubar: false,
                    theme: "modern",
+                   height : "200",
                    plugins: [
                              "advlist autolink lists link image charmap print preview anchor",
                              "searchreplace wordcount visualblocks visualchars code fullscreen",
                              "insertdatetime table contextmenu ",
                              "emoticons textcolor"
                              ],
-                   toolbar1: "insertfile undo redo | styleselect | bold italic | bullist numlist outdent indent | link image | alignleft aligncenter alignright alignjustify forecolor backcolor"
+                   toolbar1: "insertfile undo redo | styleselect | bold italic"
                    
                    };
                    
@@ -334,22 +514,7 @@ control.controller('HomeCtrl', function($scope, $state, $rootScope, $ionicPopove
                    
                    
         
-                   
-                   
-                   
-                   
-                   
-                   
-                   
-                   
-                   
-                   
-                   
-                   
-                   
-                   
-                   
-                   
+
                    
                    if(findloginornot==1)
                    {
@@ -363,10 +528,8 @@ control.controller('HomeCtrl', function($scope, $state, $rootScope, $ionicPopove
                    }
                    
                    
-                  
-                   getallbuttons();
-                   
-                   
+               
+                   getallbuttons()
                    
                    function getallbuttons()
                    {
@@ -376,15 +539,50 @@ control.controller('HomeCtrl', function($scope, $state, $rootScope, $ionicPopove
                               $http({method: "GET", url:"key.txt", cache: false, params:{}})
                              .success(function(data, status){
                                       
+                                      var keytext=$.trim(data);
                                       
+                                      localStorage.appkey=keytext;
+                                      if(localStorage.findappkeyfromcreate==1)
+                                      {
+                                      }
+                                      else if(localStorage.findappkeyfromcreate!=1)
+                                      {
                                       localStorage.appkey = $.trim(data);
+                                      localStorage.appkeyfromkeytext=$.trim(data);
+                                      }
                                       
+                                      
+                                     if(keytext!=localStorage.appkeyfromkeytext)
+                                      {
+                                      
+                                      localStorage.appkey=keytext;
+                                      }
+                         			
+                         			
+              //  db.transaction(queryDB, errorCB);
+                function queryDB(tx) {
+                tx.executeSql('CREATE TABLE IF NOT EXISTS APIKEY (id unique, appkey)');
+                tx.executeSql('INSERT INTO APIKEY (id, appkey) VALUES (1, "'+localStorage.appkey+'")' , [], querySuccess, errorCB);
+    			}
+
+   
+    			function querySuccess(tx, results) {
+  					//alert("insert :"+localStorage.appkey);
+    			}
+
+
+    			function errorCB(err) {
+        			//alert("Error processing SQL insert: "+err.code);
+    			}
+                         			
+                         			
                          			
                                       
                   $scope.mainmenus=true;
                   $scope.deletemenus=false;
                   $scope.editmenus=false;
                    $scope.ifloginwithreorder=false;
+                 
                    $ionicLoading.show({template:"Loading"});
                    $http({method: "GET", url:'http://build.myappbuilder.com/api/buttons.json', cache: false, params:{'api_key':localStorage.appkey}})
                    
@@ -395,46 +593,37 @@ control.controller('HomeCtrl', function($scope, $state, $rootScope, $ionicPopove
                             
                            
                             
-//                            if(findbuttonclick==0)
-//                            {
-//                            
-//                            for(i=0;i<$scope.allbuttons.length;i++)
-//                            {
-//                            
-//                            for(j=0;j<$scope.allbuttons[i].elements.length;j++)
-//                            {
-//                            if(stopforloop==0)
-//                            {
-//                            if($scope.allbuttons[i].elements[j].additional_field=="Slider with address")
-//                            {
-//                            stopforloop=1;
-//                            $rootScope.buttoncontent=$scope.allbuttons[i];
-//                            
-//                            alert(JSON.stringify($rootScope.buttoncontent));
-//                            
-//                            
-////                            $rootScope.sliderimages=$scope.allbuttons[i].elements[j].images;
-////                            $rootScope.slidertitle=$scope.allbuttons[i].elements[j].title;
-////                            $rootScope.slidertext=$scope.allbuttons[i].elements[j].text;
-//                            $ionicSlideBoxDelegate.update();
-//                            break;
-//                            }
-//                            }
-//                            }
-//                            }
-//                            
-//                        }
+                           if(findbuttonclick==0)
+                           {
+                           for(i=0;i<$scope.allbuttons.length;i++)
+                           {
+                           
+                           for(j=0;j<$scope.allbuttons[i].elements.length;j++)
+                           {
+                           if(stopforloop==0)
+                           {
+                           if($scope.allbuttons[i].elements[j].additional_field=="Slider with address")
+                           {
+                           stopforloop=1;
+                           $rootScope.buttoncontent=$scope.allbuttons[i];
+                           $ionicSlideBoxDelegate.update();
+                           break;
+                           }
+                           }
+                           }
+                           }
+                           
+                       	}
                            
                              $ionicLoading.hide();
                             
                             })
                    .error(function(data, status, headers, config) {
-                          
-                          if(status==401)
-                          {
-                         
-                          $state.go('login');
-                          }
+                          alert("status :"+status)
+ 						if(status==401)
+                           {
+                           $rootScope.allbuttons="";
+                           }
                           
                           $ionicLoading.hide();
                           
@@ -625,8 +814,11 @@ control.controller('HomeCtrl', function($scope, $state, $rootScope, $ionicPopove
                    }
                    else if(buttonarray.elements[0].additional_field=="Text list")
                    {
-                   
                    $state.go('textlistpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Bible quotes")
+                   {
+                   $state.go('biblequotespage');
                    }
                    else if(buttonarray.elements[0].additional_field=="Images with Description in List")
                    {
@@ -640,6 +832,12 @@ control.controller('HomeCtrl', function($scope, $state, $rootScope, $ionicPopove
                    {
                    $state.go('videowithdescriptionpage');
                    }
+                   else if(buttonarray.elements[0].additional_field=="Donation")
+                   {
+                   $state.go('donationpage');
+                   }
+
+
                    $rootScope.mainbuttonid=buttonarray.id;
                    $rootScope.mainbuttontitle=buttonarray.title;
                    
@@ -713,8 +911,8 @@ control.controller('HomeCtrl', function($scope, $state, $rootScope, $ionicPopove
                    
                    
                    var confirmPopup = $ionicPopup.confirm({
-                                                          title: 'Church',
-                                                          template: 'Are you sure you want to delete this?'
+                                                          title: 'Church App',
+                                                          template: 'Are you sure to remove this?'
                                                           });
                    confirmPopup.then(function(res) {
                                      if(res) {
@@ -855,9 +1053,43 @@ control.controller('HomeCtrl', function($scope, $state, $rootScope, $ionicPopove
                    $scope.choose.hide();
                    
                    
+                   var stophomepage=0;
+                   
                    if(pagename=="Slider with address")
                    {
+                   
+                     for(i=0;i<$rootScope.allbuttons.length;i++)
+                           {
+                           
+                           for(j=0;j<$rootScope.allbuttons[i].elements.length;j++)
+                           {
+                           if($rootScope.allbuttons[i].elements[j].additional_field=="Slider with address")
+                           {
+                           stophomepage=1;
+                           break;
+                           }
+                           }
+                           }
+                   
+                   
+                   if(stophomepage==1)
+                   {
+                    var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Home Page can create only once'
+   									});
+   									alertPopup.then(function(res) {
+     
+   								});
+                   
+                   stophomepage=0;
+                   
+                   }
+                   else
+                   {
                    $state.go('sliderpagecreate');
+                   }
+                   
                    }
                    else if(pagename=="Images and Text")
                    {
@@ -866,8 +1098,11 @@ control.controller('HomeCtrl', function($scope, $state, $rootScope, $ionicPopove
                    }
                    else if(pagename=="Text list")
                    {
-                   
                    $state.go('textlistpagecreate');
+                   }
+                   else if(pagename=="Bible quotes")
+                   {
+                   $state.go('biblequotespagecreate');
                    }
                    else if(pagename=="Images with Description in List")
                    {
@@ -882,10 +1117,33 @@ control.controller('HomeCtrl', function($scope, $state, $rootScope, $ionicPopove
                    $state.go('videowithdescriptionpagecreate');
                    }
                    
+                  else if(pagename=="Donation")
+                   {
+                   $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+                   
+                   
+                   
+                   $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/create_default.json", cache: false, params:{"api_key":localStorage.appkey,"button_id":$rootScope.mainbuttonid,"title":"Donation Title","text":"Donation text", "additional_field":"Donation"}})
+                   .success(function(data, status){
+                            $ionicLoading.hide();  
+                            $state.go('donationpage');    
+                            })
+                   .error(function(data, status) {
+                          
+                          alert(JSON.stringify(data));
+                          $ionicLoading.hide();
+
+                          });
+
+                 }
+
+
                    }
                    });
 
-control.controller('sliderpagecreateCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet) {
+control.controller('sliderpagecreateCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet, $ionicPopup) {
                  
                    
                    
@@ -894,24 +1152,41 @@ control.controller('sliderpagecreateCtrl', function($scope, $state, $rootScope, 
                    
                    $scope.btn_image="img/btn_image.png";
                    
-                   $scope.tinymceOptions = {
+                 //   $scope.tinymceOptions = {
+//                    menubar: false,
+//                    theme: "modern",
+//                    plugins: [
+//                              "advlist autolink lists link image charmap print preview anchor",
+//                              "searchreplace wordcount visualblocks visualchars code fullscreen",
+//                              "insertdatetime table contextmenu ",
+//                              "emoticons textcolor"
+//                              ],
+//                    toolbar1: "insertfile undo redo | styleselect | bold italic | bullist numlist outdent indent | link image | alignleft aligncenter alignright alignjustify forecolor backcolor"
+//                    
+//                    };
+
+
+	$scope.tinymceOptions = {
                    menubar: false,
                    theme: "modern",
+                   height : "200",
                    plugins: [
                              "advlist autolink lists link image charmap print preview anchor",
                              "searchreplace wordcount visualblocks visualchars code fullscreen",
                              "insertdatetime table contextmenu ",
                              "emoticons textcolor"
                              ],
-                   toolbar1: "insertfile undo redo | styleselect | bold italic | bullist numlist outdent indent | link image | alignleft aligncenter alignright alignjustify forecolor backcolor"
+                   toolbar1: "insertfile undo redo | styleselect | bold italic"
                    
                    };
+
+
                    $scope.slidervalues={};
                    
                    $scope.showActionsheet = function() {
                    
                    $ionicActionSheet.show({
-                                          titleText: 'Choose',
+                                          titleText: '<center><strong><h3>Choose</h3>',
                                           buttons: [
                                                     { text: 'Camera' },
                                                     { text: 'PhotoAlbum' },
@@ -954,14 +1229,56 @@ control.controller('sliderpagecreateCtrl', function($scope, $state, $rootScope, 
                    }
                    
                    
+                   
+                 $("#addimage").change(function(){
+    
+      					changeimage(this);
+  					});
+                   
+       		function changeimage(input) {
+        		if (input.files && input.files[0]) {
+            	var reader = new FileReader();
+
+            reader.onload = function (e) {
+					$('#selectedimage').attr('src', e.target.result); 
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+  	}
+                   
+                   
                    $scope.addslideimages = function(){
-                   
-            
-                   
-                   
-                   if($scope.image==undefined)
+                   if($("#addimage").get(0).files[0]==undefined || $("#addimage").get(0).files[0]=="")
                    {
+                         var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Choose Image'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
                    
+                   else if($scope.slidervalues.title==undefined || $scope.slidervalues.title=="")
+                   {
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Title'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   else if($scope.slidervalues.address==undefined || $scope.slidervalues.address=="")
+                   {
+                     var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Text'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
                    }
                    else
                    {
@@ -971,7 +1288,7 @@ control.controller('sliderpagecreateCtrl', function($scope, $state, $rootScope, 
                                       });
                    
                    
-                   
+                   $scope.slidervalues.address=$scope.slidervalues.address.replace(/(&nbsp;|(<([^>]+)>))/ig,'');
                    $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/create_default.json", cache: false, params:{"api_key":localStorage.appkey,"button_id":$rootScope.mainbuttonid,"title":$scope.slidervalues.title,"text":$scope.slidervalues.address, "additional_field":"Slider with address"}})
                    .success(function(data, status){
                             
@@ -982,46 +1299,52 @@ control.controller('sliderpagecreateCtrl', function($scope, $state, $rootScope, 
                             $scope.currentelementid=data.id;
                             
                             
-//                            $ionicLoading.show({
-//                                               template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
-//                                               });
-//                            
-//                            
-//                            $ionicLoading.show({template:"Loading"})
-//                            $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/images.json", cache: false, params:{"api_key":localStorage.appkey,"id":$scope.currentelementid,"image":$scope.btn_image}})
-//                            .success(function(data, status){
-//                                     
-//                                     alert(JSON.stringify(data));
-//                                     $ionicLoading.hide();
-//                                     
-//                                     
-//                                     
-//                                     })
-//                            .error(function(data, status) {
-//                                   
-//                                   alert(JSON.stringify(data));
-//                                   $ionicLoading.hide();
-//                                   });
+
                             
                             
                             $ionicLoading.show({
                                                template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
                                                });
+                                               
+                                               
+                                               
+                            var formData = new FormData();
+                            formData.append('api_key', localStorage.appkey);
+                			formData.append('id', $scope.currentelementid);
+                            formData.append('image', $("#addimage").get(0).files[0]);
+  
+                  $http.post('http://build.myappbuilder.com/api/elements/images.json', formData, {
+                          transformRequest: angular.identity,
+                          headers: {'Content-Type': undefined}
+                      })
+                      .success(function(data,status, headers, config){
+                          $ionicLoading.hide();
+						  $state.go('home');
+                      })
+                      .error(function(data,status, headers, config){
+                           $ionicLoading.hide(); 
+                          navigator.notification.alert(JSON.stringify(data));
+                      })                   
+                                               
+                                               
+                                               
+                                               
+                                               
                             
-                            cordova.exec(function(response){
-                                         
-                                         
-                                         
-                                         $ionicLoading.hide();
-                                         $state.go('home');
-                                         
-                                         
-                                         }, function(error){
-                                         $ionicLoading.hide();
-                                         var error = JSON.parse(error.responseText);
-                                         navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
-                                         }, "Echo", "echo", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "POST", { api_key: localStorage.appkey,id:$scope.currentelementid}]);
-                            			 
+                            // cordova.exec(function(response){
+//                                          
+//                                          
+//                                          
+//                                          $ionicLoading.hide();
+//                                          $state.go('home');
+//                                          
+//                                          
+//                                          }, function(error){
+//                                          $ionicLoading.hide();
+//                                          var error = JSON.parse(error.responseText);
+//                                          navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
+//                                          }, "ImageCompress", "imageCompress", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "POST", { api_key: localStorage.appkey,id:$scope.currentelementid}]);
+//                             			 
                             })
                    .error(function(data, status) {
                           
@@ -1042,7 +1365,7 @@ control.controller('sliderpagecreateCtrl', function($scope, $state, $rootScope, 
 
 
 
-control.controller('imageandtextcreateCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet) {
+control.controller('imageandtextcreateCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet, $ionicPopup) {
                    
                    
                    
@@ -1051,24 +1374,30 @@ control.controller('imageandtextcreateCtrl', function($scope, $state, $rootScope
                    
                    $scope.btn_image="img/btn_image.png";
                    
-                   $scope.tinymceOptions = {
+	$scope.tinymceOptions = {
                    menubar: false,
                    theme: "modern",
+                   height : "200",
                    plugins: [
                              "advlist autolink lists link image charmap print preview anchor",
                              "searchreplace wordcount visualblocks visualchars code fullscreen",
                              "insertdatetime table contextmenu ",
                              "emoticons textcolor"
                              ],
-                   toolbar1: "insertfile undo redo | styleselect | bold italic | bullist numlist outdent indent | link image | alignleft aligncenter alignright alignjustify forecolor backcolor"
+                   toolbar1: "insertfile undo redo | styleselect | bold italic"
                    
                    };
+                   
+                   
+    
+                 
+                 
                    
                    
                    $scope.showActionsheet = function() {
                    
                    $ionicActionSheet.show({
-                                          titleText: 'Choose',
+                                          titleText: '<center><strong><h3>Choose</h3>',
                                           buttons: [
                                                     { text: 'Camera' },
                                                     { text: 'PhotoAlbum' },
@@ -1111,15 +1440,67 @@ control.controller('imageandtextcreateCtrl', function($scope, $state, $rootScope
                    }
                    
                    
+                   
+                   
+             $("#addimage").change(function(){
+    
+      					changeimage(this);
+  					});
+                   
+       		function changeimage(input) {
+        		if (input.files && input.files[0]) {
+            	var reader = new FileReader();
+
+            reader.onload = function (e) {
+					$('#selectedimage').attr('src', e.target.result); 
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+  	}
+                   
+                   
+                   
+                   
+                   
+                   
                    $scope.imageandtextcreate = function(){
                    
                    
-                   
-                   
-                   if($scope.image==undefined)
+                   if($("#addimage").get(0).files[0]==undefined || $("#addimage").get(0).files[0]=="")
                    {
-                   
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Choose Image'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
                    }
+                   
+                
+                   
+               else if($scope.imageandtextcreatevalues.title==undefined || $scope.imageandtextcreatevalues.title=="")
+                   {
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Title'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   else if($scope.imageandtextcreatevalues.text==undefined || $scope.imageandtextcreatevalues.text=="")
+                   {
+                     var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Text'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   
                    else
                    {
                    
@@ -1127,7 +1508,7 @@ control.controller('imageandtextcreateCtrl', function($scope, $state, $rootScope
                                       template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
                                       });
                    
-                   
+                   $scope.imageandtextcreatevalues.text=$scope.imageandtextcreatevalues.text.replace(/(&nbsp;|(<([^>]+)>))/ig,'');
                    
                    $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/create_default.json", cache: false, params:{"api_key":localStorage.appkey,"button_id":$rootScope.mainbuttonid,"title":$scope.imageandtextcreatevalues.title,"text":$scope.imageandtextcreatevalues.text, "additional_field":"Images and Text"}})
                    .success(function(data, status){
@@ -1139,51 +1520,53 @@ control.controller('imageandtextcreateCtrl', function($scope, $state, $rootScope
                             $scope.currentelementid=data.id;
                             
                             
-                            //                            $ionicLoading.show({
-                            //                                               template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
-                            //                                               });
-                            //
-                            //
-                            //                            $ionicLoading.show({template:"Loading"})
-                            //                            $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/images.json", cache: false, params:{"api_key":localStorage.appkey,"id":$scope.currentelementid,"image":$scope.btn_image}})
-                            //                            .success(function(data, status){
-                            //
-                            //                                     alert(JSON.stringify(data));
-                            //                                     $ionicLoading.hide();
-                            //
-                            //
-                            //
-                            //                                     })
-                            //                            .error(function(data, status) {
-                            //
-                            //                                   alert(JSON.stringify(data));
-                            //                                   $ionicLoading.hide();
-                            //                                   });
-                            
+
                             
                             $ionicLoading.show({
                                                template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
                                                });
                             
-                            cordova.exec(function(response){
-                                         
-                                         
-                                         getparticularbuttonsvar=1;
-                                         $ionicLoading.hide();
-                                         $state.go('imageandtextpage');
-                                         
-                                         
-                                         }, function(error){
-                                         $ionicLoading.hide();
-                                         var error = JSON.parse(error.responseText);
-                                         navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
-                                         }, "Echo", "echo", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "POST", { api_key: localStorage.appkey,id:$scope.currentelementid}]);
+                            
+                            var formData = new FormData();
+                            formData.append('api_key', localStorage.appkey);
+                			formData.append('id', $scope.currentelementid);
+                            formData.append('image', $("#addimage").get(0).files[0]);
+                            // cordova.exec(function(response){
+//                                          
+//                                          
+//                                          getparticularbuttonsvar=1;
+//                                          $ionicLoading.hide();
+//                                          $state.go('imageandtextpage');
+//                                          
+//                                          
+//                                          }, function(error){
+//                                          alert("err :"+error);
+//                                          $ionicLoading.hide();
+//                                          var error = JSON.parse(error.responseText);
+//                                          navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
+//                                          }, "ImageCompress", "imageCompress", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "POST", { api_key: localStorage.appkey,id:$scope.currentelementid}]);
+//                             
+                            
+                            
+                  $http.post('http://build.myappbuilder.com/api/elements/images.json', formData, {
+                          transformRequest: angular.identity,
+                          headers: {'Content-Type': undefined}
+                      })
+                      .success(function(data,status, headers, config){
+                          $ionicLoading.hide(); 
+                          getparticularbuttonsvar=1;
+                          $state.go('imageandtextpage');
+                      })
+                      .error(function(data,status, headers, config){
+                           $ionicLoading.hide(); 
+                          navigator.notification.alert(JSON.stringify(data));
+                      })
                             
                             
                             })
                    .error(function(data, status) {
                           
-                          alert(JSON.stringify(data));
+                          //alert(JSON.stringify(data));
                           $ionicLoading.hide();
                           });
                    
@@ -1223,6 +1606,13 @@ control.controller('imageandtextpageCtrl', function($scope, $state, $rootScope, 
                    
                    
                   
+                  
+                  
+                  
+                  
+                  
+                  
+                  
                    
                    //getallbuttons();
                    
@@ -1237,11 +1627,7 @@ control.controller('imageandtextpageCtrl', function($scope, $state, $rootScope, 
                    .success(function(data, status, headers, config) {
                             $rootScope.allbuttons=data;
                             
-                            
 
-                            
-                            
-                            
                             $ionicLoading.hide();
                             
                             })
@@ -1310,8 +1696,9 @@ control.controller('imageandtextpageCtrl', function($scope, $state, $rootScope, 
                    $scope.modal.hide();
                    }
                    
-                   $scope.editimageandtextpage = function()
+                   $scope.editimageandtextpage = function(url)
                    {
+                   $rootScope.editimageurl=url;
                    $state.go('imageandtextpageedit');
                    }
                    $scope.gologin = function()
@@ -1351,7 +1738,6 @@ control.controller('imageandtextpageCtrl', function($scope, $state, $rootScope, 
                    
                    else if(buttonarray.elements[0].additional_field=="Slider with address")
                    {
-                   
                    $state.go('home');
                    }
                    
@@ -1365,6 +1751,10 @@ control.controller('imageandtextpageCtrl', function($scope, $state, $rootScope, 
                    
                    $state.go('textlistpage');
                    }
+                   else if(buttonarray.elements[0].additional_field=="Bible quotes")
+                   {
+                   $state.go('biblequotespage');
+                   }
                    else if(buttonarray.elements[0].additional_field=="Images with Description in List")
                    {
                    $state.go('imageswithdescriptionlistpage');
@@ -1376,6 +1766,10 @@ control.controller('imageandtextpageCtrl', function($scope, $state, $rootScope, 
                    else if(buttonarray.elements[0].tag_list[0]=="Videos with Description")
                    {
                    $state.go('videowithdescriptionpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Donation")
+                   {
+                   $state.go('donationpage');
                    }
                    $rootScope.mainbuttonid=buttonarray.id;
                    $rootScope.mainbuttontitle=buttonarray.title;
@@ -1475,8 +1869,8 @@ control.controller('imageandtextpageCtrl', function($scope, $state, $rootScope, 
                    
                    
                    var confirmPopup = $ionicPopup.confirm({
-                                                          title: 'Church',
-                                                          template: 'Are you sure you want to delete this?'
+                                                          title: 'Church App',
+                                                          template: 'Are you sure to remove this?'
                                                           });
                    confirmPopup.then(function(res) {
                                      if(res) {
@@ -1617,10 +2011,43 @@ control.controller('imageandtextpageCtrl', function($scope, $state, $rootScope, 
                    {
                    $scope.choose.hide();
                    
+                   var stophomepage=0;
                    
                    if(pagename=="Slider with address")
                    {
+                   
+                     for(i=0;i<$rootScope.allbuttons.length;i++)
+                           {
+                           
+                           for(j=0;j<$rootScope.allbuttons[i].elements.length;j++)
+                           {
+                           if($rootScope.allbuttons[i].elements[j].additional_field=="Slider with address")
+                           {
+                           stophomepage=1;
+                           break;
+                           }
+                           }
+                           }
+                   
+                   
+                   if(stophomepage==1)
+                   {
+                    var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Home Page can create only once'
+   									});
+   									alertPopup.then(function(res) {
+     
+   								});
+                   
+                   stophomepage=0;
+                   
+                   }
+                   else
+                   {
                    $state.go('sliderpagecreate');
+                   }
+                   
                    }
                    else if(pagename=="Images and Text")
                    {
@@ -1630,6 +2057,10 @@ control.controller('imageandtextpageCtrl', function($scope, $state, $rootScope, 
                    else if(pagename=="Text list")
                    {
                    $state.go('textlistpagecreate');
+                   }
+                   else if(pagename=="Bible quotes")
+                   {
+                   $state.go('biblequotespagecreate');
                    }
                    else if(pagename=="Images with Description in List")
                    {
@@ -1643,6 +2074,27 @@ control.controller('imageandtextpageCtrl', function($scope, $state, $rootScope, 
                    {
                    $state.go('videowithdescriptionpagecreate');
                    }
+                  else if(pagename=="Donation")
+                   {
+                   $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+                   
+                   
+                   
+                   $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/create_default.json", cache: false, params:{"api_key":localStorage.appkey,"button_id":$rootScope.mainbuttonid,"title":"Donation Title","text":"Donation text", "additional_field":"Donation"}})
+                   .success(function(data, status){
+                            $ionicLoading.hide();  
+                            $state.go('donationpage');    
+                            })
+                   .error(function(data, status) {
+                          
+                          alert(JSON.stringify(data));
+                          $ionicLoading.hide();
+
+                          });
+
+                 }
                    }
                    });
 
@@ -1663,6 +2115,18 @@ control.controller('sliderpageeditCtrl', function($scope, $state, $rootScope, $i
                    
                    
                    
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
                    $scope.showimages = function()
                    {
                    
@@ -1677,7 +2141,14 @@ control.controller('sliderpageeditCtrl', function($scope, $state, $rootScope, $i
                             if($scope.findimageadd==1)
                             {
                             $scope.findimageadd=0;
-                            navigator.notification.alert("Image Added Successfully", function(){}, 'Church', 'OK' );
+                            
+                            var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Image Added Successfully'
+   									});
+   									alertPopup.then(function(res) {
+     
+   									});
                             }
                             
                             
@@ -1694,16 +2165,17 @@ control.controller('sliderpageeditCtrl', function($scope, $state, $rootScope, $i
                    $scope.showimages();
                    $scope.btn_image="img/btn_image.png";
                    
-                   $scope.tinymceOptions = {
+	$scope.tinymceOptions = {
                    menubar: false,
                    theme: "modern",
+                   height : "200",
                    plugins: [
                              "advlist autolink lists link image charmap print preview anchor",
-                             "searchreplace wordcount visualblocks visualchars code fullscreen",
+                             "searchreplace wordcount  code fullscreen",
                              "insertdatetime table contextmenu ",
                              "emoticons textcolor"
                              ],
-                   toolbar1: "insertfile undo redo | styleselect | bold italic | bullist numlist outdent indent | link image | alignleft aligncenter alignright alignjustify forecolor backcolor"
+                   toolbar1: "insertfile undo redo | styleselect | bold italic"
                    
                    };
                    
@@ -1722,7 +2194,7 @@ control.controller('sliderpageeditCtrl', function($scope, $state, $rootScope, $i
                    $scope.showActionsheet = function() {
                   
                    $ionicActionSheet.show({
-                                          titleText: 'Choose',
+                                          titleText: '<center><strong><h3>Choose</h3>',
                                           buttons: [
                                                     { text: 'Camera' },
                                                     { text: 'PhotoAlbum' },
@@ -1765,14 +2237,43 @@ control.controller('sliderpageeditCtrl', function($scope, $state, $rootScope, $i
                    }
                    
                    
+                   
+                     $("#addimage").change(function(){
+    
+      					changeimage(this);
+  					});
+                   
+       		function changeimage(input) {
+        		if (input.files && input.files[0]) {
+            	var reader = new FileReader();
+
+            reader.onload = function (e) {
+					$('#selectedimage').attr('src', e.target.result); 
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+  	}
+                   
+                   
+                   
+                   
+                   
+                   
                    $scope.addslideimages = function(){
                    
                    
                    
                    
-                   if($scope.image==undefined)
+                   if($("#addimage").get(0).files[0]==undefined || $("#addimage").get(0).files[0]=="")
                    {
-                   
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Choose Image'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
                    }
                    else
                    {
@@ -1783,20 +2284,34 @@ control.controller('sliderpageeditCtrl', function($scope, $state, $rootScope, $i
                             $ionicLoading.show({
                                                template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
                                                });
+                                               
+                                               
+                                               
+                                               
+                          var formData = new FormData();
+                            formData.append('api_key', localStorage.appkey);
+                			formData.append('id', $rootScope.buttoncontent.elements[0].id);
+                            formData.append('image', $("#addimage").get(0).files[0]);
+    
                             
-                            cordova.exec(function(response){
-                                         
-                                         $scope.findimageadd=1;
+                            
+                  $http.post('http://build.myappbuilder.com/api/elements/images.json', formData, {
+                          transformRequest: angular.identity,
+                          headers: {'Content-Type': undefined}
+                      })
+                      .success(function(data,status, headers, config){
+                          $scope.findimageadd=1;
                                          
                                          $ionicLoading.hide();
                                          $scope.showimages();
-                                         
-                                         
-                                         }, function(error){
-                                         $ionicLoading.hide();
-                                         var error = JSON.parse(error.responseText);
-                                         navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
-                                         }, "Echo", "echo", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "POST", { api_key: localStorage.appkey,id:$rootScope.buttoncontent.elements[0].id}]);
+                      })
+                      .error(function(data,status, headers, config){
+                           $ionicLoading.hide(); 
+                          navigator.notification.alert(JSON.stringify(data));
+                      })                     
+                                               
+                                               
+                                               
                             
                             
                             
@@ -1808,9 +2323,33 @@ control.controller('sliderpageeditCtrl', function($scope, $state, $rootScope, $i
                    
                    $scope.updateslidertext=function()
                    {
+                   
+                   if($scope.updateslidervalues.title==undefined || $scope.updateslidervalues.title=="")
+                   {
+                      var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Title'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   else if($scope.updateslidervalues.text==undefined || $scope.updateslidervalues.text=="")
+                   {
+                      var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Text'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   else
+                   {
                    $ionicLoading.show({
                                       template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
                                       });
+                   $scope.updateslidervalues.text=$scope.updateslidervalues.text.replace(/(&nbsp;|(<([^>]+)>))/ig,'');
                    $http({method: "PUT", url:"http://build.myappbuilder.com/api/elements/update_default.json", cache: false, params:{"api_key":localStorage.appkey,"id":$rootScope.buttoncontent.elements[0].id,"title":$scope.updateslidervalues.title,"text":$scope.updateslidervalues.text}})
                    
                    .success(function(data, status, headers, config) {
@@ -1821,7 +2360,16 @@ control.controller('sliderpageeditCtrl', function($scope, $state, $rootScope, $i
                             
                             $ionicLoading.hide();
                             
-                            $state.go('home');
+                            
+                                    var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Updated Successfully'
+   									});
+   									alertPopup.then(function(res) {
+     								 $state.go('home');
+   									});
+                            
+                            
                             
                             })
                    .error(function(data, status, headers, config) {
@@ -1829,12 +2377,14 @@ control.controller('sliderpageeditCtrl', function($scope, $state, $rootScope, $i
                           $ionicLoading.hide();
                          
                           });
+                          
+                    }
                    }
                    
                    
                    $scope.deletesliderimage = function(sliderid){
                    var confirmPopup = $ionicPopup.confirm({
-                                                          title: 'Church',
+                                                          title: 'Church App',
                                                           template: 'Are you sure you want to delete this image?'
                                                           });
                    confirmPopup.then(function(res) {
@@ -1895,24 +2445,42 @@ control.controller('imageandtextpageeditCtrl', function($scope, $state, $rootSco
                    
                    
                    
-                   $scope.btn_image="img/btn_image.png";
+                   $scope.btn_image=$rootScope.editimageurl;
+                    
+                    $('#selectedimage').attr('src', $rootScope.editimageurl);
                    
-                   $scope.tinymceOptions = {
+	$scope.tinymceOptions = {
                    menubar: false,
                    theme: "modern",
+                   height : "200",
                    plugins: [
                              "advlist autolink lists link image charmap print preview anchor",
                              "searchreplace wordcount visualblocks visualchars code fullscreen",
                              "insertdatetime table contextmenu ",
                              "emoticons textcolor"
                              ],
-                   toolbar1: "insertfile undo redo | styleselect | bold italic | bullist numlist outdent indent | link image | alignleft aligncenter alignright alignjustify forecolor backcolor"
+                   toolbar1: "insertfile undo redo | styleselect | bold italic"
                    
                    };
                    
                    
                    
+     $("#editimage").change(function(){
+    
+      changeimage(this);
+  });
                    
+       function changeimage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+					$('#selectedimage').attr('src', e.target.result); 
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+  }
                    
                    
                    
@@ -1925,7 +2493,7 @@ control.controller('imageandtextpageeditCtrl', function($scope, $state, $rootSco
                    $scope.showActionsheet = function() {
                    
                    $ionicActionSheet.show({
-                                          titleText: 'Choose',
+                                          titleText: '<center><strong><h3>Choose</h3>',
                                           buttons: [
                                                     { text: 'Camera' },
                                                     { text: 'PhotoAlbum' },
@@ -1973,15 +2541,72 @@ control.controller('imageandtextpageeditCtrl', function($scope, $state, $rootSco
                    
                    
                    
-                   if($scope.image==undefined)
+                   if($("#editimage").get(0).files[0]==undefined || $("#editimage").get(0).files[0]=="")
                    {
                    
+                   $scope.updateimageandtextvalues.text=$scope.updateimageandtextvalues.text.replace(/(&nbsp;|(<([^>]+)>))/ig,'');
+                   
+                   $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+                   $http({method: "PUT", url:"http://build.myappbuilder.com/api/elements/update_default.json", cache: false, params:{"api_key":localStorage.appkey,"id":$rootScope.buttoncontent.elements[0].id,"title":$scope.updateimageandtextvalues.title,"text":$scope.updateimageandtextvalues.text}})
+                   
+                   .success(function(data, status, headers, config) {
+                            
+                           
+                            			$ionicLoading.hide();
+										getparticularbuttonsvar=1;
+                                         
+                                          var alertPopup = $ionicPopup.alert({
+     											title: 'Church App',
+     											template: 'Updated Successfully'
+   												});
+   												alertPopup.then(function(res) {
+     								 			$state.go('imageandtextpage');
+   												});
+                            
+                            
+                            
+                      
+                            
+                            
+                            
+                            
+                            
+                            
+                            })
+                   .error(function(data, status, headers, config) {
+                          
+                          $ionicLoading.hide();
+                          
+                          });
                    }
-                   else
+                   
+                   
+                  else if($scope.updateimageandtextvalues.title==undefined || $scope.updateimageandtextvalues.title=="")
                    {
+                      var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Title'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   else if($scope.updateimageandtextvalues.text==undefined || $scope.updateimageandtextvalues.text=="")
+                   {
+                      var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Text'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
                    
-                   
-                   
+                   else
+                   {       
+                   $scope.updateimageandtextvalues.text=$scope.updateimageandtextvalues.text.replace(/(&nbsp;|(<([^>]+)>))/ig,'');
                    
                    $ionicLoading.show({
                                       template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
@@ -1992,37 +2617,46 @@ control.controller('imageandtextpageeditCtrl', function($scope, $state, $rootSco
                             
                            
                             
-//                            $http({method: "PUT", url:'http://build.myappbuilder.com/api/elements/images.json', cache: false, params:{'api_key':localStorage.appkey,'element_id':$rootScope.buttoncontent.elements[0].id,'id':$rootScope.buttoncontent.elements[0].images[0].id, 'image':$scope.image}})
-//                            
-//                            .success(function(data, status, headers, config) {
-//                                     $ionicLoading.hide();
-//                                     getparticularbuttonsvar=1;
-//                                     $state.go('imageandtextpage');
-//                                     })
-//                            .error(function(data, status, headers, config) {
-//                                   alert(JSON.stringify(data));
-//                                   $ionicLoading.hide();
-//                                 
-//                                   });
-                            
-                            
-                            
-                            cordova.exec(function(response){
+
+
+						   var formData = new FormData();
+                            formData.append('api_key', localStorage.appkey);
+                			formData.append('element_id', $rootScope.buttoncontent.elements[0].id);
+                			formData.append('id', $rootScope.buttoncontent.elements[0].images[0].id);
+                            formData.append('image', $("#editimage").get(0).files[0]);
+
+							
+							
+							
+					$http.put('http://build.myappbuilder.com/api/elements/images.json', formData, {
+                          transformRequest: angular.identity,
+                          headers: {'Content-Type': undefined}
+                      })
+                      .success(function(data,status, headers, config){
+                          getparticularbuttonsvar=1;
                                          
-                                         getparticularbuttonsvar=1;
-                                         $state.go('imageandtextpage');
+                                          var alertPopup = $ionicPopup.alert({
+     											title: 'Church App',
+     											template: 'Updated Successfully'
+   												});
+   												alertPopup.then(function(res) {
+     								 			$state.go('imageandtextpage');
+   												});
+                                         
+                                         
                                          
                                          $ionicLoading.hide();
                                          
-                                         
-                                         
-                                         }, function(error){
-                                         $ionicLoading.hide();
-                                         var error = JSON.parse(error.responseText);
-                                         navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
-                                         }, "Echo", "echo", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "PUT", { api_key: localStorage.appkey,element_id:$rootScope.buttoncontent.elements[0].id,id:$rootScope.buttoncontent.elements[0].images[0].id}]);
+                      })
+                      .error(function(data,status, headers, config){
+                           $ionicLoading.hide(); 
+                          navigator.notification.alert(JSON.stringify(data));
+                      })
+							
+								
                             
-                            
+                           
+
                             
                             
                             
@@ -2066,7 +2700,7 @@ control.controller('imageandtextpageeditCtrl', function($scope, $state, $rootSco
 
 
 
-control.controller('textlistpagecreateCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet) {
+control.controller('textlistpagecreateCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet, $ionicPopup) {
                    
                    
                    
@@ -2075,16 +2709,17 @@ control.controller('textlistpagecreateCtrl', function($scope, $state, $rootScope
                    
                    
                    
-                   $scope.tinymceOptions = {
+	$scope.tinymceOptions = {
                    menubar: false,
                    theme: "modern",
+                   height : "200",
                    plugins: [
                              "advlist autolink lists link image charmap print preview anchor",
                              "searchreplace wordcount visualblocks visualchars code fullscreen",
                              "insertdatetime table contextmenu ",
                              "emoticons textcolor"
                              ],
-                   toolbar1: "insertfile undo redo | styleselect | bold italic | bullist numlist outdent indent | link image | alignleft aligncenter alignright alignjustify forecolor backcolor"
+                   toolbar1: "insertfile undo redo | styleselect | bold italic"
                    
                    };
                    
@@ -2093,22 +2728,48 @@ control.controller('textlistpagecreateCtrl', function($scope, $state, $rootScope
                    
                    
                    $scope.addtextlistcontent = function(){
-                   
-                   
-                   
-                   
-                   
-                   
                    $ionicLoading.show({
                                       template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
                                       });
                    
                    
+                 if($scope.textlistcreatevalues.title==undefined || $scope.textlistcreatevalues.title=="")
+                   {
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Title'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                 else if($scope.textlistcreatevalues.text==undefined || $scope.textlistcreatevalues.text=="")
+                   {
+                     var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Text'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   
+                   else
+                   {
+                   
+                   $scope.textlistcreatevalues.text=$scope.textlistcreatevalues.text.replace(/(&nbsp;|(<([^>]+)>))/ig,'');
                    
                    $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/create_default.json", cache: false, params:{"api_key":localStorage.appkey,"button_id":$rootScope.mainbuttonid,"title":$scope.textlistcreatevalues.title,"text":$scope.textlistcreatevalues.text, "additional_field":"Text list"}})
                    .success(function(data, status){
                            getparticularbuttonsvar=1;
-                            $state.go('textlistpage');
+                                  var alertPopup = $ionicPopup.alert({
+     											title: 'Church App',
+     											template: 'Created Successfully'
+   												});
+   												alertPopup.then(function(res) {
+     								 			$state.go('textlistpage');
+   												});
+                            
                             $ionicLoading.hide();
                             
 
@@ -2119,7 +2780,7 @@ control.controller('textlistpagecreateCtrl', function($scope, $state, $rootScope
                           $ionicLoading.hide();
                           });
                    
-                   
+                   }
                    }
                    
                    $scope.backtextlistpage =function()
@@ -2131,7 +2792,7 @@ control.controller('textlistpagecreateCtrl', function($scope, $state, $rootScope
 
 
 
-control.controller('textlistpageCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicPopup, $ionicActionSheet, $ionicSlideBoxDelegate) {
+control.controller('textlistpageCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicPopup, $ionicActionSheet, $ionicSlideBoxDelegate, $ionicPopup) {
                    
                    
                   
@@ -2139,11 +2800,13 @@ control.controller('textlistpageCtrl', function($scope, $state, $rootScope, $ion
                    if(findloginornot==1)
                    {
                    $scope.iflogin=true;
+                   $scope.textlists=false;
                    
                    }
                    else
                    {
                    $scope.ifnotlogin=true;
+                   $scope.textlists=true;
                    
                    }
                    
@@ -2266,12 +2929,13 @@ control.controller('textlistpageCtrl', function($scope, $state, $rootScope, $ion
                    $scope.editmenus=false;
                    $scope.reordermenus=false;
                    $scope.mainmenus=true;
+                   $scope.textlists=true;
                    };
                    $scope.addtextlistpagego = function()
                    {
                    $state.go('textlistaddpage');
                    }
-                   $scope.textlists=true;
+                   //$scope.textlists=true;
                    $scope.textlistdeletebutton=false;
                    $scope.textlisteditbutton=false;
                    $scope.deletetextlist = function()
@@ -2322,7 +2986,11 @@ control.controller('textlistpageCtrl', function($scope, $state, $rootScope, $ion
                    $state.go('textlisteditpage');
                    }
                    
-                  
+                  $scope.programeventdetails = function(text)
+                  {
+                  $rootScope.programeventdetailstext=text;
+                  $state.go('programeventdetailspage');
+                  }
                    
                    $scope.clickmainmenu = function(buttonarray)
                    {
@@ -2355,8 +3023,11 @@ control.controller('textlistpageCtrl', function($scope, $state, $rootScope, $ion
                    }
                    else if(buttonarray.elements[0].additional_field=="Text list")
                    {
-                   
                    $state.go('textlistpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Bible quotes")
+                   {
+                   $state.go('biblequotespage');
                    }
                    else if(buttonarray.elements[0].additional_field=="Images with Description in List")
                    {
@@ -2369,6 +3040,10 @@ control.controller('textlistpageCtrl', function($scope, $state, $rootScope, $ion
                    else if(buttonarray.elements[0].tag_list[0]=="Videos with Description")
                    {
                    $state.go('videowithdescriptionpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Donation")
+                   {
+                   $state.go('donationpage');
                    }
                    $rootScope.mainbuttonid=buttonarray.id;
                    $rootScope.mainbuttontitle=buttonarray.title;
@@ -2468,8 +3143,8 @@ control.controller('textlistpageCtrl', function($scope, $state, $rootScope, $ion
                    
                    
                    var confirmPopup = $ionicPopup.confirm({
-                                                          title: 'Church',
-                                                          template: 'Are you sure you want to delete this?'
+                                                          title: 'Church App',
+                                                          template: 'Are you sure to remove this?'
                                                           });
                    confirmPopup.then(function(res) {
                                      if(res) {
@@ -2606,8 +3281,8 @@ control.controller('textlistpageCtrl', function($scope, $state, $rootScope, $ion
                    
                    
                    var confirmPopup = $ionicPopup.confirm({
-                                                          title: 'Church',
-                                                          template: 'Are you sure you want to delete this?'
+                                                          title: 'Church App',
+                                                          template: 'Are you sure to remove this?'
                                                           });
                    confirmPopup.then(function(res) {
                                      if(res) {
@@ -2663,9 +3338,43 @@ control.controller('textlistpageCtrl', function($scope, $state, $rootScope, $ion
                    $scope.choose.hide();
                    
                    
+                  var stophomepage=0;
+                   
                    if(pagename=="Slider with address")
                    {
+                   
+                     for(i=0;i<$rootScope.allbuttons.length;i++)
+                           {
+                           
+                           for(j=0;j<$rootScope.allbuttons[i].elements.length;j++)
+                           {
+                           if($rootScope.allbuttons[i].elements[j].additional_field=="Slider with address")
+                           {
+                           stophomepage=1;
+                           break;
+                           }
+                           }
+                           }
+                   
+                   
+                   if(stophomepage==1)
+                   {
+                    var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Home Page can create only once'
+   									});
+   									alertPopup.then(function(res) {
+     
+   								});
+                   
+                   stophomepage=0;
+                   
+                   }
+                   else
+                   {
                    $state.go('sliderpagecreate');
+                   }
+                   
                    }
                    else if(pagename=="Images and Text")
                    {
@@ -2674,8 +3383,11 @@ control.controller('textlistpageCtrl', function($scope, $state, $rootScope, $ion
                    }
                    else if(pagename=="Text list")
                    {
-                   
                    $state.go('textlistpagecreate');
+                   }
+                   else if(pagename=="Bible quotes")
+                   {
+                   $state.go('biblequotespagecreate');
                    }
                    else if(pagename=="Images with Description in List")
                    {
@@ -2690,6 +3402,27 @@ control.controller('textlistpageCtrl', function($scope, $state, $rootScope, $ion
                    {
                    $state.go('videowithdescriptionpagecreate');
                    }
+                   else if(pagename=="Donation")
+                   {
+                   $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+                   
+                   
+                   
+                   $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/create_default.json", cache: false, params:{"api_key":localStorage.appkey,"button_id":$rootScope.mainbuttonid,"title":"Donation Title","text":"Donation text", "additional_field":"Donation"}})
+                   .success(function(data, status){
+                            $ionicLoading.hide();  
+                            $state.go('donationpage');    
+                            })
+                   .error(function(data, status) {
+                          
+                          alert(JSON.stringify(data));
+                          $ionicLoading.hide();
+
+                          });
+
+                 }
                    }
                    });
 
@@ -2700,25 +3433,19 @@ control.controller('textlistaddpageCtrl', function($scope, $state, $rootScope, $
                    
                    $scope.textlistaddvalues={};
                    
+ 
                    
-                   
-                   
-                   
-                   
-                   
-                   
-                  
-                   
-                   $scope.tinymceOptions = {
+	$scope.tinymceOptions = {
                    menubar: false,
                    theme: "modern",
+                   height : "200",
                    plugins: [
                              "advlist autolink lists link image charmap print preview anchor",
                              "searchreplace wordcount visualblocks visualchars code fullscreen",
                              "insertdatetime table contextmenu ",
                              "emoticons textcolor"
                              ],
-                   toolbar1: "insertfile undo redo | styleselect | bold italic | bullist numlist outdent indent | link image | alignleft aligncenter alignright alignjustify forecolor backcolor"
+                   toolbar1: "insertfile undo redo | styleselect | bold italic"
                    
                    };
                    
@@ -2731,7 +3458,31 @@ control.controller('textlistaddpageCtrl', function($scope, $state, $rootScope, $
                    
                    
                    $scope.addtextlistcontent = function(){
+                  if($scope.textlistaddvalues.title==undefined || $scope.textlistaddvalues.title=="")
+                   {
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Title'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                 else if($scope.textlistaddvalues.text==undefined || $scope.textlistaddvalues.text=="")
+                   {
+                     var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Text'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   
+                   else
+                   {
                  
+                 	$scope.textlistaddvalues.text=$scope.textlistaddvalues.text.replace(/(&nbsp;|(<([^>]+)>))/ig,'');
                    $ionicLoading.show({
                                       template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
                                       });
@@ -2743,7 +3494,16 @@ control.controller('textlistaddpageCtrl', function($scope, $state, $rootScope, $
                            $ionicLoading.hide();
                             
                             getparticularbuttonsvar=1;
-                            $state.go('textlistpage');
+                            
+                                  var alertPopup = $ionicPopup.alert({
+     											title: 'Church App',
+     											template: 'Created Successfully'
+   												});
+   												alertPopup.then(function(res) {
+     								 			$state.go('textlistpage');
+   												});
+                            
+                            
     
                             
                             
@@ -2757,6 +3517,9 @@ control.controller('textlistaddpageCtrl', function($scope, $state, $rootScope, $
                           $ionicLoading.hide();
                           
                           });
+                          
+                    }      
+                          
 
                    }
                    
@@ -2790,16 +3553,17 @@ control.controller('textlisteditpageCtrl', function($scope, $state, $rootScope, 
                    
                    
                    
-                   $scope.tinymceOptions = {
+	$scope.tinymceOptions = {
                    menubar: false,
                    theme: "modern",
+                   height : "200",
                    plugins: [
                              "advlist autolink lists link image charmap print preview anchor",
                              "searchreplace wordcount visualblocks visualchars code fullscreen",
                              "insertdatetime table contextmenu ",
                              "emoticons textcolor"
                              ],
-                   toolbar1: "insertfile undo redo | styleselect | bold italic | bullist numlist outdent indent | link image | alignleft aligncenter alignright alignjustify forecolor backcolor"
+                   toolbar1: "insertfile undo redo | styleselect | bold italic"
                    
                    };
                    
@@ -2812,6 +3576,32 @@ control.controller('textlisteditpageCtrl', function($scope, $state, $rootScope, 
                    
                    
                    $scope.edittextlistcontent = function(){
+                   if($scope.textlisteditvalues.title==undefined || $scope.textlisteditvalues.title=="")
+                   {
+                      var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Title'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   else if($scope.textlisteditvalues.text==undefined || $scope.textlisteditvalues.text=="")
+                   {
+                      var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Text'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   
+                   else
+                   {
+                   $scope.textlisteditvalues.text=$scope.textlisteditvalues.text.replace(/(&nbsp;|(<([^>]+)>))/ig,'');
+                   
+                   
                    
                    $ionicLoading.show({
                                       template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
@@ -2821,10 +3611,20 @@ control.controller('textlisteditpageCtrl', function($scope, $state, $rootScope, 
                    .success(function(data, status, headers, config) {
                             
                             
+                            
+                            
                             $ionicLoading.hide();
                             
                             getparticularbuttonsvar=1;
-                            $state.go('textlistpage');
+                            
+                             var alertPopup = $ionicPopup.alert({
+     											title: 'Church App',
+     											template: 'Updated Successfully'
+   												});
+   												alertPopup.then(function(res) {
+     								 			$state.go('textlistpage');
+   												});
+                            
                             
                             
                             
@@ -2838,6 +3638,8 @@ control.controller('textlisteditpageCtrl', function($scope, $state, $rootScope, 
                           $ionicLoading.hide();
                           
                           });
+                          
+                    }
                    
                    }
                    
@@ -2857,7 +3659,26 @@ control.controller('textlisteditpageCtrl', function($scope, $state, $rootScope, 
 
 
 
-control.controller('imageswithdescriptionpagecreateCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet) {
+
+control.controller('programeventdetailspageCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet,$ionicPopup) {
+                   
+
+
+                   
+                   $scope.backtextlistpage =function()
+                   {
+                   $state.go('textlistpage');
+                   }
+                   
+                   });
+
+
+
+
+
+
+
+control.controller('imageswithdescriptionpagecreateCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet, $ionicPopup) {
                    
                    
                    
@@ -2866,16 +3687,17 @@ control.controller('imageswithdescriptionpagecreateCtrl', function($scope, $stat
                    
                    $scope.btn_image="img/btn_image.png";
                    
-                   $scope.tinymceOptions = {
+	$scope.tinymceOptions = {
                    menubar: false,
                    theme: "modern",
+                   height : "200",
                    plugins: [
                              "advlist autolink lists link image charmap print preview anchor",
                              "searchreplace wordcount visualblocks visualchars code fullscreen",
                              "insertdatetime table contextmenu ",
                              "emoticons textcolor"
                              ],
-                   toolbar1: "insertfile undo redo | styleselect | bold italic | bullist numlist outdent indent | link image | alignleft aligncenter alignright alignjustify forecolor backcolor"
+                   toolbar1: "insertfile undo redo | styleselect | bold italic"
                    
                    };
                    
@@ -2883,7 +3705,7 @@ control.controller('imageswithdescriptionpagecreateCtrl', function($scope, $stat
                    $scope.showActionsheet = function() {
                    
                    $ionicActionSheet.show({
-                                          titleText: 'Choose',
+                                          titleText: '<center><strong><h3>Choose</h3>',
                                           buttons: [
                                                     { text: 'Camera' },
                                                     { text: 'PhotoAlbum' },
@@ -2925,16 +3747,57 @@ control.controller('imageswithdescriptionpagecreateCtrl', function($scope, $stat
                    navigator.notification.alert('Failed because: ' + message);
                    }
                    
+                    $("#addimage").change(function(){
+    
+      					changeimage(this);
+  					});
                    
+       		function changeimage(input) {
+        		if (input.files && input.files[0]) {
+            	var reader = new FileReader();
+
+            reader.onload = function (e) {
+					$('#selectedimage').attr('src', e.target.result); 
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+  	}
                    $scope.imagewithdescriptionlistcreate = function(){
-                   
-                   
-                   
-                   
-                   if($scope.image==undefined)
+                   if($("#addimage").get(0).files[0]==undefined || $("#addimage").get(0).files[0]=="")
                    {
-                   
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Choose Image'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
                    }
+                   
+                   
+                  else if($scope.imagewithdescriptioncreatevalues.title==undefined || $scope.imagewithdescriptioncreatevalues.title=="")
+                   {
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Title'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                 else if($scope.imagewithdescriptioncreatevalues.text==undefined || $scope.imagewithdescriptioncreatevalues.text=="")
+                   {
+                     var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Text'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   
+                   
                    else
                    {
                    
@@ -2942,7 +3805,7 @@ control.controller('imageswithdescriptionpagecreateCtrl', function($scope, $stat
                                       template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
                                       });
                    
-                   
+                   $scope.imagewithdescriptioncreatevalues.text=$scope.imagewithdescriptioncreatevalues.text.replace(/(&nbsp;|(<([^>]+)>))/ig,'');
                    
                    $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/create_default.json", cache: false, params:{"api_key":localStorage.appkey,"button_id":$rootScope.mainbuttonid,"title":$scope.imagewithdescriptioncreatevalues.title,"text":$scope.imagewithdescriptioncreatevalues.text, "additional_field":"Images with Description in List"}})
                    .success(function(data, status){
@@ -2960,21 +3823,65 @@ control.controller('imageswithdescriptionpagecreateCtrl', function($scope, $stat
                                                template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
                                                });
                             
-                            cordova.exec(function(response){
-                                         
-                                         
-                                         getparticularbuttonsvar=1;
-                                         $ionicLoading.hide();
-                                         $state.go('imageswithdescriptionlistpage');
-                                         
-                                         
-                                         }, function(error){
-                                         $ionicLoading.hide();
-                                         var error = JSON.parse(error.responseText);
-                                         navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
-                                         }, "Echo", "echo", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "POST", { api_key: localStorage.appkey,id:$scope.currentelementid}]);
                             
                             
+                            
+                            var formData = new FormData();
+                            formData.append('api_key', localStorage.appkey);
+                			formData.append('id', $scope.currentelementid);
+                            formData.append('image', $("#addimage").get(0).files[0]);
+              
+                            
+                  $http.post('http://build.myappbuilder.com/api/elements/images.json', formData, {
+                          transformRequest: angular.identity,
+                          headers: {'Content-Type': undefined}
+                      })
+                      .success(function(data,status, headers, config){
+                             			getparticularbuttonsvar=1;
+                                         $ionicLoading.hide();
+                                         
+                                            var alertPopup = $ionicPopup.alert({
+     											title: 'Church App',
+     											template: 'Image Added Successfully'
+   												});
+   												alertPopup.then(function(res) {
+     								 			$state.go('imageswithdescriptionlistpage');
+   												});
+                                         
+                      })
+                      .error(function(data,status, headers, config){
+                           $ionicLoading.hide(); 
+                          navigator.notification.alert(JSON.stringify(data));
+                      }) 
+                            
+                            
+                            
+                            
+                           //  cordova.exec(function(response){
+//                                          
+//                                          
+//                                          getparticularbuttonsvar=1;
+//                                          $ionicLoading.hide();
+//                                          
+//                                             var alertPopup = $ionicPopup.alert({
+//      											title: 'Church App',
+//      											template: 'Image Added Successfully'
+//    												});
+//    												alertPopup.then(function(res) {
+//      								 			$state.go('imageswithdescriptionlistpage');
+//    												});
+//                                          
+//                                          
+//                                          
+//                                          
+//                                          
+//                                          }, function(error){
+//                                          $ionicLoading.hide();
+//                                          var error = JSON.parse(error.responseText);
+//                                          navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
+//                                          }, "ImageCompress", "imageCompress", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "POST", { api_key: localStorage.appkey,id:$scope.currentelementid}]);
+//                             
+//                             
                             })
                    .error(function(data, status) {
                           
@@ -3002,12 +3909,12 @@ control.controller('imageswithdescriptionlistpageCtrl', function($scope, $state,
                    if(findloginornot==1)
                    {
                    $scope.iflogin=true;
-                   
+                   $scope.imageanddescriptionlists=false;
                    }
                    else
                    {
                    $scope.ifnotlogin=true;
-                   
+                   $scope.imageanddescriptionlists=true;
                    }
                    
                    
@@ -3123,12 +4030,13 @@ control.controller('imageswithdescriptionlistpageCtrl', function($scope, $state,
                    $scope.editmenus=false;
                    $scope.reordermenus=false;
                    $scope.mainmenus=true;
+                   $scope.imageanddescriptionlists=true;
                    };
                    $scope.addimagewithdescriptionpagego = function()
                    {
                    $state.go('imageswithdescriptionlistaddpage');
                    }
-                   $scope.imageanddescriptionlists=true;
+                   //$scope.imageanddescriptionlists=true;
                    $scope.imageanddescriptiondeletebutton=false;
                    $scope.imageanddescriptioneditbutton=false;
                    $scope.deleteimageanddescriptionlist = function()
@@ -3174,7 +4082,7 @@ control.controller('imageswithdescriptionlistpageCtrl', function($scope, $state,
                    
                    $scope.editthisimageanddescriptioncontent = function(elementarry)
                    {
-                   
+                   	
                    $rootScope.textlistelementcontent=elementarry;
                    $state.go('imageswithdescriptionlisteditpage');
                    }
@@ -3212,8 +4120,11 @@ control.controller('imageswithdescriptionlistpageCtrl', function($scope, $state,
                    }
                    else if(buttonarray.elements[0].additional_field=="Text list")
                    {
-                   
                    $state.go('textlistpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Bible quotes")
+                   {
+                   $state.go('biblequotespage');
                    }
                    else if(buttonarray.elements[0].additional_field=="Images with Description in List")
                    {
@@ -3226,6 +4137,10 @@ control.controller('imageswithdescriptionlistpageCtrl', function($scope, $state,
                    else if(buttonarray.elements[0].tag_list[0]=="Videos with Description")
                    {
                    $state.go('videowithdescriptionpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Donation")
+                   {
+                   $state.go('donationpage');
                    }
                    $rootScope.mainbuttonid=buttonarray.id;
                    $rootScope.mainbuttontitle=buttonarray.title;
@@ -3322,8 +4237,8 @@ control.controller('imageswithdescriptionlistpageCtrl', function($scope, $state,
                    $scope.deletethisimageanddescriptioncontent = function(elementarray)
                    {
                    var confirmPopup = $ionicPopup.confirm({
-                                                          title: 'Church',
-                                                          template: 'Are you sure you want to delete this?'
+                                                          title: 'Church App',
+                                                          template: 'Are you sure to remove this?'
                                                           });
                    confirmPopup.then(function(res) {
                                      if(res) {
@@ -3460,8 +4375,8 @@ control.controller('imageswithdescriptionlistpageCtrl', function($scope, $state,
                    
                    
                    var confirmPopup = $ionicPopup.confirm({
-                                                          title: 'Church',
-                                                          template: 'Are you sure you want to delete this?'
+                                                          title: 'Church App',
+                                                          template: 'Are you sure to remove this?'
                                                           });
                    confirmPopup.then(function(res) {
                                      if(res) {
@@ -3517,9 +4432,43 @@ control.controller('imageswithdescriptionlistpageCtrl', function($scope, $state,
                    $scope.choose.hide();
                    
                    
+                  var stophomepage=0;
+                   
                    if(pagename=="Slider with address")
                    {
+                   
+                     for(i=0;i<$rootScope.allbuttons.length;i++)
+                           {
+                           
+                           for(j=0;j<$rootScope.allbuttons[i].elements.length;j++)
+                           {
+                           if($rootScope.allbuttons[i].elements[j].additional_field=="Slider with address")
+                           {
+                           stophomepage=1;
+                           break;
+                           }
+                           }
+                           }
+                   
+                   
+                   if(stophomepage==1)
+                   {
+                    var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Home Page can create only once'
+   									});
+   									alertPopup.then(function(res) {
+     
+   								});
+                   
+                   stophomepage=0;
+                   
+                   }
+                   else
+                   {
                    $state.go('sliderpagecreate');
+                   }
+                   
                    }
                    else if(pagename=="Images and Text")
                    {
@@ -3528,8 +4477,11 @@ control.controller('imageswithdescriptionlistpageCtrl', function($scope, $state,
                    }
                    else if(pagename=="Text list")
                    {
-                   
                    $state.go('textlistpagecreate');
+                   }
+                   else if(pagename=="Bible quotes")
+                   {
+                   $state.go('biblequotespagecreate');
                    }
                    else if(pagename=="Images with Description in List")
                    {
@@ -3544,6 +4496,27 @@ control.controller('imageswithdescriptionlistpageCtrl', function($scope, $state,
                    {
                    $state.go('videowithdescriptionpagecreate');
                    }
+                    else if(pagename=="Donation")
+                   {
+                   $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+                   
+                   
+                   
+                   $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/create_default.json", cache: false, params:{"api_key":localStorage.appkey,"button_id":$rootScope.mainbuttonid,"title":"Donation Title","text":"Donation text", "additional_field":"Donation"}})
+                   .success(function(data, status){
+                            $ionicLoading.hide();  
+                            $state.go('donationpage');    
+                            })
+                   .error(function(data, status) {
+                          
+                          alert(JSON.stringify(data));
+                          $ionicLoading.hide();
+
+                          });
+
+                 }
                    }
                    });
 
@@ -3565,16 +4538,17 @@ control.controller('imageswithdescriptionlistpageaddCtrl', function($scope, $sta
                    
                    $scope.btn_image="img/btn_image.png";
                    
-                   $scope.tinymceOptions = {
+	$scope.tinymceOptions = {
                    menubar: false,
                    theme: "modern",
+                   height : "200",
                    plugins: [
                              "advlist autolink lists link image charmap print preview anchor",
                              "searchreplace wordcount visualblocks visualchars code fullscreen",
                              "insertdatetime table contextmenu ",
                              "emoticons textcolor"
                              ],
-                   toolbar1: "insertfile undo redo | styleselect | bold italic | bullist numlist outdent indent | link image | alignleft aligncenter alignright alignjustify forecolor backcolor"
+                   toolbar1: "insertfile undo redo | styleselect | bold italic"
                    
                    };
                    
@@ -3589,7 +4563,7 @@ control.controller('imageswithdescriptionlistpageaddCtrl', function($scope, $sta
                    $scope.showActionsheet = function() {
                    
                    $ionicActionSheet.show({
-                                          titleText: 'Choose',
+                                          titleText: '<center><strong><h3>Choose</h3>',
                                           buttons: [
                                                     { text: 'Camera' },
                                                     { text: 'PhotoAlbum' },
@@ -3632,15 +4606,66 @@ control.controller('imageswithdescriptionlistpageaddCtrl', function($scope, $sta
                    }
                    
                    
+                   
+             $("#addimage").change(function(){
+    
+      					changeimage(this);
+  					});
+                   
+       		function changeimage(input) {
+        		if (input.files && input.files[0]) {
+            	var reader = new FileReader();
+
+            reader.onload = function (e) {
+					$('#selectedimage').attr('src', e.target.result); 
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+  	}
+                   
+                   
+                   
+                   
                    $scope.imagewithdescriptionlistadd = function(){
                    
                    
                    
                    
-                   if($scope.image==undefined)
+                   if($("#addimage").get(0).files[0]==undefined || $("#addimage").get(0).files[0]=="")
                    {
-                   
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Choose Image'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
                    }
+                   
+                   
+                  else if($scope.imagewithdescriptionaddvalues.title==undefined || $scope.imagewithdescriptionaddvalues.title=="")
+                   {
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Title'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                 else if($scope.imagewithdescriptionaddvalues.text==undefined || $scope.imagewithdescriptionaddvalues.text=="")
+                   {
+                     var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Text'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   
+                   
                    else
                    {
                    
@@ -3665,21 +4690,63 @@ control.controller('imageswithdescriptionlistpageaddCtrl', function($scope, $sta
                             $ionicLoading.show({
                                                template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
                                                });
+                                               
+                                               
+                                               
+                                               
+                                               
+                        var formData = new FormData();
+                            formData.append('api_key', localStorage.appkey);
+                			formData.append('id', $scope.currentelementid);
+                            formData.append('image', $("#addimage").get(0).files[0]);
+              
                             
-                            cordova.exec(function(response){
-                                         
-                                         
-                                         getparticularbuttonsvar=1;
+                  $http.post('http://build.myappbuilder.com/api/elements/images.json', formData, {
+                          transformRequest: angular.identity,
+                          headers: {'Content-Type': undefined}
+                      })
+                      .success(function(data,status, headers, config){
+                             			getparticularbuttonsvar=1;
                                          $ionicLoading.hide();
-                                         $state.go('imageswithdescriptionlistpage');
+                                          var alertPopup = $ionicPopup.alert({
+     											title: 'Church App',
+     											template: 'Image Added Successfully'
+   												});
+   												alertPopup.then(function(res) {
+     								 			$state.go('imageswithdescriptionlistpage');
+   												});
                                          
-                                         
-                                         }, function(error){
-                                         $ionicLoading.hide();
-                                         var error = JSON.parse(error.responseText);
-                                         navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
-                                         }, "Echo", "echo", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "POST", { api_key: localStorage.appkey,id:$scope.currentelementid}]);
+                      })
+                      .error(function(data,status, headers, config){
+                           $ionicLoading.hide(); 
+                          navigator.notification.alert(JSON.stringify(data));
+                      })                          
+                                               
+                                               
+                                               
+                                               
                             
+                           //  cordova.exec(function(response){
+//                                          
+//                                          
+//                                          getparticularbuttonsvar=1;
+//                                          $ionicLoading.hide();
+//                                           var alertPopup = $ionicPopup.alert({
+//      											title: 'Church App',
+//      											template: 'Image Added Successfully'
+//    												});
+//    												alertPopup.then(function(res) {
+//      								 			$state.go('imageswithdescriptionlistpage');
+//    												});
+//                                          
+//                                          
+//                                          
+//                                          }, function(error){
+//                                          $ionicLoading.hide();
+//                                          var error = JSON.parse(error.responseText);
+//                                          navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
+//                                          }, "ImageCompress", "imageCompress", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "POST", { api_key: localStorage.appkey,id:$scope.currentelementid}]);
+//                             
                             
                             })
                    .error(function(data, status) {
@@ -3728,16 +4795,18 @@ control.controller('imageswithdescriptionlistpageeditCtrl', function($scope, $st
                    
                    $scope.btn_image=$rootScope.textlistelementcontent.images[0].url;
                    
-                   $scope.tinymceOptions = {
+                   $('#selectedimage').attr('src', $rootScope.textlistelementcontent.images[0].url);
+	$scope.tinymceOptions = {
                    menubar: false,
                    theme: "modern",
+                   height : "200",
                    plugins: [
                              "advlist autolink lists link image charmap print preview anchor",
                              "searchreplace wordcount visualblocks visualchars code fullscreen",
                              "insertdatetime table contextmenu ",
                              "emoticons textcolor"
                              ],
-                   toolbar1: "insertfile undo redo | styleselect | bold italic | bullist numlist outdent indent | link image | alignleft aligncenter alignright alignjustify forecolor backcolor"
+                   toolbar1: "insertfile undo redo | styleselect | bold italic"
                    
                    };
                    
@@ -3752,7 +4821,7 @@ control.controller('imageswithdescriptionlistpageeditCtrl', function($scope, $st
                    $scope.showActionsheet = function() {
                    
                    $ionicActionSheet.show({
-                                          titleText: 'Choose',
+                                          titleText: '<center><strong><h3>Choose</h3>',
                                           buttons: [
                                                     { text: 'Camera' },
                                                     { text: 'PhotoAlbum' },
@@ -3795,15 +4864,90 @@ control.controller('imageswithdescriptionlistpageeditCtrl', function($scope, $st
                    }
                    
                    
+                   
+                   
+            $("#editimage").change(function(){
+    
+      					changeimage(this);
+  					});
+                   
+       		function changeimage(input) {
+        		if (input.files && input.files[0]) {
+            	var reader = new FileReader();
+
+            reader.onload = function (e) {
+					$('#selectedimage').attr('src', e.target.result); 
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+  	}
+                   
+                   
+                   
+                   
+                   
+                   
                    $scope.imagewithdescriptionlistedit = function(){
                    
                    
                    
                    
-                   if($scope.image==undefined)
+                   if($("#editimage").get(0).files[0]==undefined || $("#editimage").get(0).files[0]=="")
                    {
+                  $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
                    
+                   $scope.imagewithdescriptioneditvalues.text=$scope.imagewithdescriptioneditvalues.text.replace(/(&nbsp;|(<([^>]+)>))/ig,'');
+                   
+                   $http({method: "PUT", url:"http://build.myappbuilder.com/api/elements/update_default.json", cache: false, params:{"api_key":localStorage.appkey,"id":$rootScope.textlistelementcontent.id,"title":$scope.imagewithdescriptioneditvalues.title,"text":$scope.imagewithdescriptioneditvalues.text}})
+                   .success(function(data, status){
+                            
+                            
+                                    getparticularbuttonsvar=1;
+                                    $ionicLoading.hide();
+                                    var alertPopup = $ionicPopup.alert({
+     									title: 'Church App',
+     									template: 'Updated Successfully'
+   												});
+   										alertPopup.then(function(res) {
+     								 	$state.go('imageswithdescriptionlistpage');
+   												});
+                            
+                            
+                           
+
+                            })
+                   .error(function(data, status) {
+                          
+                          alert(JSON.stringify(data));
+                          $ionicLoading.hide();
+                          });
                    }
+                   
+                   
+                   else if($scope.textlistelementcontent.title==undefined || $scope.textlistelementcontent.title=="")
+                   {
+                      var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Title'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   else if($scope.textlistelementcontent.text==undefined || $scope.textlistelementcontent.text=="")
+                   {
+                      var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Text'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   
                    else
                    {
                    
@@ -3811,7 +4955,7 @@ control.controller('imageswithdescriptionlistpageeditCtrl', function($scope, $st
                                       template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
                                       });
                    
-                   
+                   $scope.imagewithdescriptioneditvalues.text=$scope.imagewithdescriptioneditvalues.text.replace(/(&nbsp;|(<([^>]+)>))/ig,'');
                    
                    $http({method: "PUT", url:"http://build.myappbuilder.com/api/elements/update_default.json", cache: false, params:{"api_key":localStorage.appkey,"id":$rootScope.textlistelementcontent.id,"title":$scope.imagewithdescriptioneditvalues.title,"text":$scope.imagewithdescriptioneditvalues.text}})
                    .success(function(data, status){
@@ -3828,21 +4972,62 @@ control.controller('imageswithdescriptionlistpageeditCtrl', function($scope, $st
                             $ionicLoading.show({
                                                template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
                                                });
+                                               
+                                               
+                                               
+                                               
+                            var formData = new FormData();
+                            formData.append('api_key', localStorage.appkey);
+                			formData.append('element_id', $rootScope.textlistelementcontent.id);
+                			formData.append('id', $scope.imagewithdescriptioneditvalues.imageid);
+                            formData.append('image', $("#editimage").get(0).files[0]);
+              
                             
-                            cordova.exec(function(response){
-                                         
-                                         
-                                         getparticularbuttonsvar=1;
+                  $http.put('http://build.myappbuilder.com/api/elements/images.json', formData, {
+                          transformRequest: angular.identity,
+                          headers: {'Content-Type': undefined}
+                      })
+                      .success(function(data,status, headers, config){
+                                     getparticularbuttonsvar=1;
                                          $ionicLoading.hide();
-                                         $state.go('imageswithdescriptionlistpage');
+                                          var alertPopup = $ionicPopup.alert({
+     											title: 'Church App',
+     											template: 'Updated Successfully'
+   												});
+   												alertPopup.then(function(res) {
+     								 			$state.go('imageswithdescriptionlistpage');
+   												});
                                          
-                                         
-                                         }, function(error){
-                                         $ionicLoading.hide();
-                                         var error = JSON.parse(error.responseText);
-                                         navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
-                                         }, "Echo", "echo", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "PUT", { api_key: localStorage.appkey,element_id:$rootScope.textlistelementcontent.id,id:$scope.imagewithdescriptioneditvalues.imageid}]);
+                      })
+                      .error(function(data,status, headers, config){
+                           $ionicLoading.hide(); 
+                          navigator.notification.alert(JSON.stringify(data));
+                      })                      
+                                               
+                                               
+                                               
                             
+                            // cordova.exec(function(response){
+//                                          
+//                                          
+//                                          getparticularbuttonsvar=1;
+//                                          $ionicLoading.hide();
+//                                           var alertPopup = $ionicPopup.alert({
+//      											title: 'Church App',
+//      											template: 'Updated Successfully'
+//    												});
+//    												alertPopup.then(function(res) {
+//      								 			$state.go('imageswithdescriptionlistpage');
+//    												});
+//                                          
+//                                          
+//                                          
+//                                          }, function(error){
+//                                          $ionicLoading.hide();
+//                                          var error = JSON.parse(error.responseText);
+//                                          navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
+//                                          }, "ImageCompress", "imageCompress", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "PUT", { api_key: localStorage.appkey,element_id:$rootScope.textlistelementcontent.id,id:$scope.imagewithdescriptioneditvalues.imageid}]);
+//                             
                             
                             })
                    .error(function(data, status) {
@@ -3871,7 +5056,7 @@ control.controller('imageswithdescriptionlistpageeditCtrl', function($scope, $st
 
 
 
-control.controller('imagespagecreateCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet) {
+control.controller('imagespagecreateCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet, $ionicPopup) {
                    
                    
                    
@@ -3886,7 +5071,7 @@ control.controller('imagespagecreateCtrl', function($scope, $state, $rootScope, 
                    $scope.showActionsheet = function() {
                    
                    $ionicActionSheet.show({
-                                          titleText: 'Choose',
+                                          titleText: '<center><strong><h3>Choose</h3>',
                                           buttons: [
                                                     { text: 'Camera' },
                                                     { text: 'PhotoAlbum' },
@@ -3929,14 +5114,39 @@ control.controller('imagespagecreateCtrl', function($scope, $state, $rootScope, 
                    }
                    
                    
+                   
+               $("#addimage").change(function(){
+    
+      					changeimage(this);
+  					});
+                   
+       		function changeimage(input) {
+        		if (input.files && input.files[0]) {
+            	var reader = new FileReader();
+
+            reader.onload = function (e) {
+					$('#selectedimage').attr('src', e.target.result); 
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+  	}
+                   
+                   
+                   
+                   
+                   
                    $scope.imagescreate = function(){
                    
-                   
-                   
-                   
-                   if($scope.image==undefined)
+                   if($("#addimage").get(0).files[0]==undefined || $("#addimage").get(0).files[0]=="")
                    {
-                   
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Choose Image'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
                    }
                    else
                    {
@@ -3944,6 +5154,7 @@ control.controller('imagespagecreateCtrl', function($scope, $state, $rootScope, 
                    $ionicLoading.show({
                                       template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
                                       });
+                   
                    
                    
                    
@@ -3963,20 +5174,62 @@ control.controller('imagespagecreateCtrl', function($scope, $state, $rootScope, 
                                                template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
                                                });
                             
-                            cordova.exec(function(response){
-                                         
-                                         
-                                         getparticularbuttonsvar=1;
-                                         $ionicLoading.hide();
-                                         $state.go('imagespage');
-                                         
-                                         
-                                         }, function(error){
-                                         $ionicLoading.hide();
-                                         var error = JSON.parse(error.responseText);
-                                         navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
-                                         }, "Echo", "echo", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "POST", { api_key: localStorage.appkey,id:$scope.currentelementid}]);
                             
+                            
+                            
+                              var formData = new FormData();
+                            formData.append('api_key', localStorage.appkey);
+                			formData.append('id', $scope.currentelementid);
+                            formData.append('image', $("#addimage").get(0).files[0]);
+              
+                            
+                  $http.post('http://build.myappbuilder.com/api/elements/images.json', formData, {
+                          transformRequest: angular.identity,
+                          headers: {'Content-Type': undefined}
+                      })
+                      .success(function(data,status, headers, config){
+                             getparticularbuttonsvar=1;
+                                         $ionicLoading.hide();
+                                          var alertPopup = $ionicPopup.alert({
+     											title: 'Church App',
+     											template: 'Image Added Successfully'
+   												});
+   												alertPopup.then(function(res) {
+     								 			$state.go('imagespage');
+   												});
+                                         
+                      })
+                      .error(function(data,status, headers, config){
+                           $ionicLoading.hide(); 
+                          navigator.notification.alert(JSON.stringify(data));
+                      }) 
+                            
+                            
+                            
+                            
+                            
+                            
+                          //   cordova.exec(function(response){
+//                                          
+//                                          
+//                                          getparticularbuttonsvar=1;
+//                                          $ionicLoading.hide();
+//                                           var alertPopup = $ionicPopup.alert({
+//      											title: 'Church App',
+//      											template: 'Image Added Successfully'
+//    												});
+//    												alertPopup.then(function(res) {
+//      								 			$state.go('imagespage');
+//    												});
+//                                          
+//                                          
+//                                          
+//                                          }, function(error){
+//                                          $ionicLoading.hide();
+//                                          var error = JSON.parse(error.responseText);
+//                                          navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
+//                                          }, "ImageCompress", "imageCompress", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "POST", { api_key: localStorage.appkey,id:$scope.currentelementid}]);
+//                             
                             
                             })
                    .error(function(data, status) {
@@ -4007,12 +5260,12 @@ control.controller('imagespageCtrl', function($scope, $state, $rootScope, $ionic
                    if(findloginornot==1)
                    {
                    $scope.iflogin=true;
-                   
+                   $scope.imageslists=false;
                    }
                    else
                    {
                    $scope.ifnotlogin=true;
-                   
+                   $scope.imageslists=true;
                    }
                    
                    
@@ -4127,13 +5380,14 @@ control.controller('imagespageCtrl', function($scope, $state, $rootScope, $ionic
                    $scope.editmenus=false;
                    $scope.reordermenus=false;
                    $scope.mainmenus=true;
+                   $scope.imageslists=true;
                    };
                    $scope.addimagepagego = function(buttonarray)
                    {
                    $rootScope.buttonforimages=buttonarray;
                    $state.go('imagesaddpage');
                    }
-                   $scope.imageslists=true;
+                  // $scope.imageslists=true;
                    $scope.imagesdeletebutton=false;
                    $scope.imageseditbutton=false;
                    $scope.deleteimageslist = function()
@@ -4219,8 +5473,11 @@ control.controller('imagespageCtrl', function($scope, $state, $rootScope, $ionic
                    }
                    else if(buttonarray.elements[0].additional_field=="Text list")
                    {
-                   
                    $state.go('textlistpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Bible quotes")
+                   {
+                   $state.go('biblequotespage');
                    }
                    else if(buttonarray.elements[0].additional_field=="Images with Description in List")
                    {
@@ -4233,6 +5490,10 @@ control.controller('imagespageCtrl', function($scope, $state, $rootScope, $ionic
                    else if(buttonarray.elements[0].tag_list[0]=="Videos with Description")
                    {
                    $state.go('videowithdescriptionpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Donation")
+                   {
+                   $state.go('donationpage');
                    }
                    $rootScope.mainbuttonid=buttonarray.id;
                    $rootScope.mainbuttontitle=buttonarray.title;
@@ -4329,8 +5590,8 @@ control.controller('imagespageCtrl', function($scope, $state, $rootScope, $ionic
                    $scope.deletethisimages = function(elementarray,buttonarray)
                    {
                    var confirmPopup = $ionicPopup.confirm({
-                                                          title: 'Church',
-                                                          template: 'Are you sure you want to delete this?'
+                                                          title: 'Church App',
+                                                          template: 'Are you sure to remove this?'
                                                           });
                    confirmPopup.then(function(res) {
                                      if(res) {
@@ -4467,8 +5728,8 @@ control.controller('imagespageCtrl', function($scope, $state, $rootScope, $ionic
                    
                    
                    var confirmPopup = $ionicPopup.confirm({
-                                                          title: 'Church',
-                                                          template: 'Are you sure you want to delete this?'
+                                                          title: 'Church App',
+                                                          template: 'Are you sure to remove this?'
                                                           });
                    confirmPopup.then(function(res) {
                                      if(res) {
@@ -4524,9 +5785,43 @@ control.controller('imagespageCtrl', function($scope, $state, $rootScope, $ionic
                    $scope.choose.hide();
                    
                    
+                  var stophomepage=0;
+                   
                    if(pagename=="Slider with address")
                    {
+                   
+                     for(i=0;i<$rootScope.allbuttons.length;i++)
+                           {
+                           
+                           for(j=0;j<$rootScope.allbuttons[i].elements.length;j++)
+                           {
+                           if($rootScope.allbuttons[i].elements[j].additional_field=="Slider with address")
+                           {
+                           stophomepage=1;
+                           break;
+                           }
+                           }
+                           }
+                   
+                   
+                   if(stophomepage==1)
+                   {
+                    var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Home Page can create only once'
+   									});
+   									alertPopup.then(function(res) {
+     
+   								});
+                   
+                   stophomepage=0;
+                   
+                   }
+                   else
+                   {
                    $state.go('sliderpagecreate');
+                   }
+                   
                    }
                    else if(pagename=="Images and Text")
                    {
@@ -4535,8 +5830,11 @@ control.controller('imagespageCtrl', function($scope, $state, $rootScope, $ionic
                    }
                    else if(pagename=="Text list")
                    {
-                   
                    $state.go('textlistpagecreate');
+                   }
+                   else if(pagename=="Bible quotes")
+                   {
+                   $state.go('biblequotespagecreate');
                    }
                    else if(pagename=="Images with Description in List")
                    {
@@ -4551,13 +5849,34 @@ control.controller('imagespageCtrl', function($scope, $state, $rootScope, $ionic
                    {
                    $state.go('videowithdescriptionpagecreate');
                    }
+                   else if(pagename=="Donation")
+                   {
+                   $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+                   
+                   
+                   
+                   $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/create_default.json", cache: false, params:{"api_key":localStorage.appkey,"button_id":$rootScope.mainbuttonid,"title":"Donation Title","text":"Donation text", "additional_field":"Donation"}})
+                   .success(function(data, status){
+                            $ionicLoading.hide();  
+                            $state.go('donationpage');    
+                            })
+                   .error(function(data, status) {
+                          
+                          alert(JSON.stringify(data));
+                          $ionicLoading.hide();
+
+                          });
+
+                 }
                    }
                    });
 
 
 
 
-control.controller('imagesaddpageCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet) {
+control.controller('imagesaddpageCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet, $ionicPopup) {
                    
                    
                    
@@ -4572,7 +5891,7 @@ control.controller('imagesaddpageCtrl', function($scope, $state, $rootScope, $io
                    $scope.showActionsheet = function() {
                    
                    $ionicActionSheet.show({
-                                          titleText: 'Choose',
+                                          titleText: '<center><strong><h3>Choose</h3>',
                                           buttons: [
                                                     { text: 'Camera' },
                                                     { text: 'PhotoAlbum' },
@@ -4602,6 +5921,7 @@ control.controller('imagesaddpageCtrl', function($scope, $state, $rootScope, $io
                    
                    function onSuccess(imageURI) {
                    $scope.image = imageURI;
+                   
                    $('#selectedimage').attr('src', imageURI);
                  $scope.btn_image=imageURI;
                    
@@ -4615,10 +5935,35 @@ control.controller('imagesaddpageCtrl', function($scope, $state, $rootScope, $io
                    }
                    
                    
-                   $scope.imagesadd = function(){
-                   if($scope.image==undefined)
-                   {
+                  $("#addimage").change(function(){
+    
+      					changeimage(this);
+  					});
                    
+       		function changeimage(input) {
+        		if (input.files && input.files[0]) {
+            	var reader = new FileReader();
+
+            reader.onload = function (e) {
+					$('#selectedimage').attr('src', e.target.result); 
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+  	}
+                   
+                   
+                   
+                   $scope.imagesadd = function(){
+                   if($("#addimage").get(0).files[0]==undefined || $("#addimage").get(0).files[0]=="")
+                   {
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Choose Image'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
                    }
                    else
                    {
@@ -4626,22 +5971,59 @@ control.controller('imagesaddpageCtrl', function($scope, $state, $rootScope, $io
                   $ionicLoading.show({
                                                template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
                                                });
+                                               
+                                               
+                             var formData = new FormData();
+                            formData.append('api_key', localStorage.appkey);
+                			formData.append('id', $rootScope.buttonforimages.elements[0].id);
+                            formData.append('image', $("#addimage").get(0).files[0]);
+              
                             
-                            cordova.exec(function(response){
-                                         
-                                         
-                                         getparticularbuttonsvar=1;
+                  $http.post('http://build.myappbuilder.com/api/elements/images.json', formData, {
+                          transformRequest: angular.identity,
+                          headers: {'Content-Type': undefined}
+                      })
+                      .success(function(data,status, headers, config){
+                            getparticularbuttonsvar=1;
                                          $ionicLoading.hide();
-                                         $state.go('imagespage');
+                                         var alertPopup = $ionicPopup.alert({
+     											title: 'Church App',
+     											template: 'Images Added Successfully'
+   												});
+   												alertPopup.then(function(res) {
+     								 			$state.go('imagespage');
+   												});
                                          
-                                         
-                                         }, function(error){
-                                         alert("err :"+error);
-                                         $ionicLoading.hide();
-                                         var error = JSON.parse(error.responseText);
-                                         navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
-                            			 }, "Echo", "echo", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "POST", { api_key: localStorage.appkey,id:$rootScope.buttonforimages.elements[0].id}]);	
+                      })
+                      .error(function(data,status, headers, config){
+                           $ionicLoading.hide(); 
+                          navigator.notification.alert(JSON.stringify(data));
+                      })                   
+                                               
+                                               
                             
+                  //           cordova.exec(function(response){
+//                                          
+//                                          
+//                                          getparticularbuttonsvar=1;
+//                                          $ionicLoading.hide();
+//                                          var alertPopup = $ionicPopup.alert({
+//      											title: 'Church App',
+//      											template: 'Images Added Successfully'
+//    												});
+//    												alertPopup.then(function(res) {
+//      								 			$state.go('imagespage');
+//    												});
+//                                          
+//                                          
+//                                          
+//                                          }, function(error){
+//                                          alert("err :"+error);
+//                                          $ionicLoading.hide();
+//                                          var error = JSON.parse(error.responseText);
+//                                          navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
+//                             			 }, "ImageCompress", "imageCompress", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "POST", { api_key: localStorage.appkey,id:$rootScope.buttonforimages.elements[0].id}]);	
+//                             
                            
          
                    
@@ -4657,7 +6039,7 @@ control.controller('imagesaddpageCtrl', function($scope, $state, $rootScope, $io
 
 
 
-control.controller('imageseditpageCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet) {
+control.controller('imageseditpageCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet, $ionicPopup) {
                    
                    
                    
@@ -4667,12 +6049,12 @@ control.controller('imageseditpageCtrl', function($scope, $state, $rootScope, $i
                    $scope.btn_image=$rootScope.imageselement.url;
                    
                    
-                   
+                   $('#selectedimage').attr('src', $rootScope.imageselement.url);
                    
                    $scope.showActionsheet = function() {
                    
                    $ionicActionSheet.show({
-                                          titleText: 'Choose',
+                                          titleText: '<center><strong><h3>Choose</h3>',
                                           buttons: [
                                                     { text: 'Camera' },
                                                     { text: 'PhotoAlbum' },
@@ -4715,37 +6097,107 @@ control.controller('imageseditpageCtrl', function($scope, $state, $rootScope, $i
                    }
                    
                    
-                   $scope.imagesupdate = function(){
-                   if($scope.image==undefined)
-                   {
                    
+                   $("#editimage").change(function(){
+    
+      					changeimage(this);
+  					});
+                   
+       		function changeimage(input) {
+        		if (input.files && input.files[0]) {
+            	var reader = new FileReader();
+
+            reader.onload = function (e) {
+					$('#selectedimage').attr('src', e.target.result); 
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+  	}
+                   
+                   
+                   
+                   $scope.imagesupdate = function(){
+                  
+                   if($("#editimage").get(0).files[0]==undefined || $("#editimage").get(0).files[0]=="")
+                   {
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Choose Image'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
                    }
                    else
                    {
                    
                    
+                  
+                   
                    $ionicLoading.show({
                                       template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
                                       });
-                   
-                   cordova.exec(function(response){
-                                
-                               
-                                getparticularbuttonsvar=1;
+                                      
+                                      
+                         var formData = new FormData();
+                            formData.append('api_key', localStorage.appkey);
+                			formData.append('element_id', $rootScope.buttonforimages.elements[0].id);
+                			formData.append('id', $rootScope.imageselement.id);
+                            formData.append('image', $("#editimage").get(0).files[0]);
+              
+                            
+                  $http.put('http://build.myappbuilder.com/api/elements/images.json', formData, {
+                          transformRequest: angular.identity,
+                          headers: {'Content-Type': undefined}
+                      })
+                      .success(function(data,status, headers, config){
+                                      getparticularbuttonsvar=1;
                                 $ionicLoading.hide();
-                                $state.go('imagespage');
                                 
-                                
-                                }, function(error){
-                                $ionicLoading.hide();
-                                var error = JSON.parse(error.responseText);
-                                navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
-                                }, "Echo", "echo", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "PUT", { api_key: localStorage.appkey,element_id:$rootScope.buttonforimages.elements[0].id,id:$rootScope.imageselement.id}]);
+                                  var alertPopup = $ionicPopup.alert({
+     											title: 'Church App',
+     											template: 'Image Updated Successfully'
+   												});
+   												alertPopup.then(function(res) {
+     								 			$state.go('imagespage');
+   												});
+                                         
+                      })
+                      .error(function(data,status, headers, config){
+                           $ionicLoading.hide(); 
+                          navigator.notification.alert(JSON.stringify(data));
+                      })                 
+                                      
+                                      
                    
-                   
-                   
-                   
-                   
+                  //  cordova.exec(function(response){
+//                                 
+//                                
+//                                 getparticularbuttonsvar=1;
+//                                 $ionicLoading.hide();
+//                                 
+//                                   var alertPopup = $ionicPopup.alert({
+//      											title: 'Church App',
+//      											template: 'Image Updated Successfully'
+//    												});
+//    												alertPopup.then(function(res) {
+//      								 			$state.go('imagespage');
+//    												});
+//                                 
+//                                 
+//                                 
+//                                 
+//                                 }, function(error){
+//                                 $ionicLoading.hide();
+//                                 var error = JSON.parse(error.responseText);
+//                                 navigator.notification.alert(error.error, function(){}, 'Content', 'OK' );
+//                                 }, "ImageCompress", "imageCompress", ["370", "280", "image", $scope.image, "http://build.myappbuilder.com/api/elements/images.json?", "PUT", { api_key: localStorage.appkey,element_id:$rootScope.buttonforimages.elements[0].id,id:$rootScope.imageselement.id}]);
+//                    
+//                    
+//                    
+//                    
+//                    
                    }
                    }
                    
@@ -4758,7 +6210,7 @@ control.controller('imageseditpageCtrl', function($scope, $state, $rootScope, $i
 
 
 
-control.controller('videowithdescriptionpagecreateCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet) {
+control.controller('videowithdescriptionpagecreateCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet, $ionicPopup) {
                    
                    
                    
@@ -4767,169 +6219,217 @@ control.controller('videowithdescriptionpagecreateCtrl', function($scope, $state
                    
                    
                    
-                   $scope.tinymceOptions = {
+	$scope.tinymceOptions = {
                    menubar: false,
                    theme: "modern",
+                   height : "200",
                    plugins: [
                              "advlist autolink lists link image charmap print preview anchor",
                              "searchreplace wordcount visualblocks visualchars code fullscreen",
                              "insertdatetime table contextmenu ",
                              "emoticons textcolor"
                              ],
-                   toolbar1: "insertfile undo redo | styleselect | bold italic | bullist numlist outdent indent | link image | alignleft aligncenter alignright alignjustify forecolor backcolor"
+                   toolbar1: "insertfile undo redo | styleselect | bold italic"
                    
                    };
                    
                    
                    
+                   $('#video').change(function () {
+                                                var alertPopup = $ionicPopup.alert({
+                                                                                   title: 'Church App',
+                                                                                   template: 'Video Selected successfully'
+                                                                                   });
+                                                alertPopup.then(function(res) {
+                                                                
+                                                                });
+                                                })
+                   
+
                    
                    
-//                   $scope.videowithdescriptioncreate = function(){
-//                   
-//                   
-//                   if((($("#video").get(0).files[0].size) / 1024 / 1024) <= 10){
-//                   
-//                   
-//                   
-//                   
-//                   $scope.videowithdescriptioncreatevalues.video= $("#video").get(0).files[0];
-//                   
-//                   $ionicLoading.show({
-//                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
-//                                      });
-//                   alert("btn id :"+$rootScope.mainbuttonid)
-//                   alert("title :"+$scope.videowithdescriptioncreatevalues.title);
-//                   alert("description :"+$scope.videowithdescriptioncreatevalues.text);
-//                   alert("video :"+$scope.videowithdescriptioncreatevalues.video);
-//                   $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/create_video.json", cache: false, params:{"api_key":localStorage.appkey,"button_id":$rootScope.mainbuttonid,"title":$scope.videowithdescriptioncreatevalues.title,"description":$scope.videowithdescriptioncreatevalues.text,"video":$scope.videowithdescriptioncreatevalues.video, "price":"Videos with Description"}})
-//                   .success(function(data, status){
-//                            
-//                            
-//                            $ionicLoading.hide();
-//                            
-//                            
-//                            $scope.currentelementid=data.id;
-//                            
-//                            
-//
-//                            
-//                            
-//                        
-//                            
-//    
-//                            
-//                            
-//                            })
-//                   .error(function(data, status) {
-//                          
-//                          alert(JSON.stringify(data));
-//                          $ionicLoading.hide();
-//                          });
-//                   
-//                   }
-//                   else
-//                   {
-//                   var alertPopup = $ionicPopup.alert({
-//                                                      title: 'MAB',
-//                                                      template: 'Please choose Video File below 10MB or Video Frame'
-//                                                      });
-//                   alertPopup.then(function(res) {
-//                                   
-//                                   });
-//                   }
-//                 
-//                   }
+                                      $("#selectvideothump").change(function(){
+    
+      					changeimage(this);
+  					});
+                   
+       		function changeimage(input) {
+        		if (input.files && input.files[0]) {
+            	var reader = new FileReader();
+
+            reader.onload = function (e) {
+					$('#selectedimage').attr('src', e.target.result); 
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+  	}
                    
                    
-                   
-                   
+         
                    
                    
                    $scope.videowithdescriptioncreate = function(){
+  if((($("#video").get(0).files[0].size) / 1024 / 1024) <= 10){
+                   $scope.beforevideoupload=true;
                    
                    
                    
-                   if(((($("#video").get(0).files[0].size) / 1024 / 1024) <= 10)){
+                    if($("#video").get(0).files[0]==undefined || $("#video").get(0).files[0]=="")
+                   {
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Select Video'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   
+                  else if($("#selectvideothump").get(0).files[0]==undefined || $("#selectvideothump").get(0).files[0]=="")
+                   {
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Select Video Thumbnail Image'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   
+                   else if($scope.videowithdescriptioncreatevalues.title==undefined || $scope.videowithdescriptioncreatevalues.title=="")
+                   {
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Title'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                 else if($scope.videowithdescriptioncreatevalues.text==undefined || $scope.videowithdescriptioncreatevalues.text=="")
+                   {
+                     var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Text'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   
+              
+                   
+                   
+                   else
+                   {
+                   
                    
                    $ionicLoading.show({
-                                      content: '<i class="icon ion-loading-a"></i>&nbsp;Please Wait..',
-                                      animation: 'fade-in',
-                                      showBackdrop: true,
-                                      maxWidth: 200,
-                                      showDelay: 0
-                                      });
+                                       content: '<i class="icon ion-loading-a"></i>&nbsp;Please Wait..',
+                                       animation: 'fade-in',
+                                       showBackdrop: true,
+                                       maxWidth: 200,
+                                       showDelay: 0
+                                       });
+                   
+   
                    
                    var formData = new FormData();
-                   formData.append('api_key', localStorage.appkey);
-                   formData.append('button_id', $rootScope.mainbuttonid);
-                   formData.append('title', $scope.videowithdescriptioncreatevalues.title);
-                   formData.append('description',$scope.videowithdescriptioncreatevalues.text);
-                   formData.append('video',$("#video").get(0).files[0]);
+                            formData.append('api_key', localStorage.appkey);
+                			formData.append('button_id', $rootScope.mainbuttonid);
+                			formData.append('title', $scope.videowithdescriptioncreatevalues.title);
+                			formData.append('description', $scope.videowithdescriptioncreatevalues.text);
+                            formData.append('video', $("#video").get(0).files[0]);
+							formData.append('video_thumbnail', $("#selectvideothump").get(0).files[0]);
+							
+							
+							
+					$http.post('http://build.myappbuilder.com/api/elements/create_video.json', formData, {
+                          transformRequest: angular.identity,
+                          headers: {'Content-Type': undefined}
+                      })
+                      .success(function(data,status, headers, config){
+                            $scope.beforevideoupload=false;
+                            alert(data.id)
+                        $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/tags.json", cache: false, params:{"api_key":localStorage.appkey,"id":data.id,"tags":"Videos with Description"}})
+                                .success(function(data, status){
+                                         $ionicLoading.hide();
+                                         getparticularbuttonsvar=1;
+                                         var alertPopup = $ionicPopup.alert({
+                                                                            title: 'Church App',
+                                                                            template: 'Video Created Successfully'
+                                                                            });
+                                         alertPopup.then(function(res) {
+                                                         $state.go('videowithdescriptionpage');
+                                                         });
+                                         
+                                         
+                                         
+                                         })
+                                .error(function(data, status) {
+                                       
+                                       alert("errror :"+JSON.stringify(data));
+                                       $ionicLoading.hide();
+                                       });
+                                         
+                      })
+                      .error(function(data,status, headers, config){
+                           $ionicLoading.hide(); 
+                          navigator.notification.alert(JSON.stringify(data));
+                      })
                    
-                   formData.append('video_thumbnail',$('#videothumb').get(0).files[0]);
-                   formData.append('additional_field','Videos with Description');
-                   formData.append('price','price text');
-                   formData.append('video_frame_title','Frame text');
                    
-                   $http.post('http://build.myappbuilder.com/api/elements/create_video.json', formData, {
-                              transformRequest: angular.identity,
-                              headers: {'Content-Type': undefined}
-                              })
                    
-                   .success(function(data,status, headers, config){
-                            $ionicLoading.hide();
-                         
-                            
-                            
-                            $ionicLoading.show({
-                                               template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
-                                               });
-                            
-                            
-                            
-                            $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/tags.json", cache: false, params:{"api_key":localStorage.appkey,"id":data.id,"tags":"Videos with Description"}})
-                            .success(function(data, status){
-                                     $ionicLoading.hide();
-                                     $state.go('videowithdescriptionpage');
-                                     
-                                     })
-                            .error(function(data, status) {
-                                   
-                                   alert("errput :"+JSON.stringify(data));
-                                   $ionicLoading.hide();
-                                   });
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            })
-                   .error(function(data,status, headers, config){
-                          alert("err :"+JSON.stringify(data));
-                          var total = JSON.parse(data);        
-                          
-                          var alertPopup = $ionicPopup.alert({
-                                                             title: 'Video',
-                                                             template:total.error
-                                                             });
-                          alertPopup.then(function(res) {
-                                          });
-                          $ionicLoading.hide();
-                          
-                          });
-                   }  
+                  
+ //                   cordova.exec(function(response){
+//                                 $scope.beforevideoupload=false;
+//                                 
+//                                 $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/tags.json", cache: false, params:{"api_key":localStorage.appkey,"id":response.id,"tags":"Videos with Description"}})
+//                                 .success(function(data, status){
+//                                          $ionicLoading.hide();
+//                                          getparticularbuttonsvar=1;
+//                                          var alertPopup = $ionicPopup.alert({
+//                                                                             title: 'Church App',
+//                                                                             template: 'Video Created Successfully'
+//                                                                             });
+//                                          alertPopup.then(function(res) {
+//                                                          $state.go('videowithdescriptionpage');
+//                                                          });
+//                                          
+//                                          
+//                                          
+//                                          })
+//                                 .error(function(data, status) {
+//                                        
+//                                        alert("errror :"+JSON.stringify(data));
+//                                        $ionicLoading.hide();
+//                                        });
+//                                 
+//                                 }, 
+//                                 function(e){alert(e);$ionicLoading.hide();}, "Thumbnail", "thumbnail",[localStorage.appkey,$rootScope.mainbuttonid,$scope.videowithdescriptioncreatevalues.title,$scope.videowithdescriptioncreatevalues.text,$('input[name="video"]').val(),"Nothumbnail", "post"])
+// 
+// 
+//  
+                   
+                   }
+                   
+                   }
+                   
+                   
                    else{
                    var alertPopup = $ionicPopup.alert({
-                                                      title: 'MAB',
-                                                      template: 'Please choose Video File below 10MB or Video Frame'
+                                                      title: 'Church',
+                                                      template: 'Please choose Video File below 10MB!'
                                                       });
                    alertPopup.then(function(res) {
-                                   
+                                   //console.log('Thank you for not eating my delicious ice cream cone');
                                    });
                    }
+                   
+                   
+                   
+                   
                    
                    }
                    
@@ -4952,12 +6452,10 @@ control.controller('videowithdescriptionpageCtrl', function($scope, $state, $roo
                    if(findloginornot==1)
                    {
                    $scope.iflogin=true;
-                   
                    }
                    else
                    {
                    $scope.ifnotlogin=true;
-                   
                    }
                    
                    
@@ -4967,26 +6465,33 @@ control.controller('videowithdescriptionpageCtrl', function($scope, $state, $roo
                    //$scope.allbuttons=$rootScope.allbuttons;
                    
                    
-                               $scope.video = {
-                preload: "none",
-                sources: [
-                    {src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.mp4"), type: "video/mp4"},
-                    {src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.webm"), type: "video/webm"},
-                    {src: $sce.trustAsResourceUrl("http://static.videogular.com/assets/videos/videogular.ogg"), type: "video/ogg"}
-                ],
-                tracks: [
-                    {
-                        src: "http://www.videogular.com/assets/subs/pale-blue-dot.vtt",
-                        kind: "subtitles",
-                        srclang: "en",
-                        label: "English",
-                        default: ""
-                    }
-                ],
-                theme: {
-                    url: "http://www.videogular.com/styles/themes/default/latest/videogular.css"
-                }
-            };
+
+                   
+           $scope.videoclick=function(videobuttonarray){
+           
+					cordova.exec(null, null, "Echo_Video", "echo_video", [videobuttonarray.elements[0].video.url,"YES"]);
+					// alert(videobuttonarray.elements[0].id);
+// 					alert(videobuttonarray.elements[0].images[0].url);
+// 	cordova.exec(function(response){
+// 						alert("success :"+JSON.stringify(response));	
+//   	 },
+//             	 function(e){
+//             	 alert("error :"+e);
+//             	 $ionicLoading.hide();
+//             	 }, "Echo_Capture", "echo_capture", ["300", "280", "image", videobuttonarray.elements[0].images[0].url, "http://build.myappbuilder.com/api/elements/images.json?", "post", {"api_key":localStorage.appkey,"id":videobuttonarray.elements[0].id}])   
+//                
+
+			
+	
+                   }        
+                   
+                   
+        $scope.videowithdescriptioneditpage=function(){
+        		$state.go('videowithdescriptioneditpage');
+                   
+                 }  
+                   
+   
                    
                    //getallbuttons();
                    
@@ -5126,8 +6631,11 @@ control.controller('videowithdescriptionpageCtrl', function($scope, $state, $roo
                    }
                    else if(buttonarray.elements[0].additional_field=="Text list")
                    {
-                   
                    $state.go('textlistpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Bible quotes")
+                   {
+                   $state.go('biblequotespage');
                    }
                    else if(buttonarray.elements[0].additional_field=="Images with Description in List")
                    {
@@ -5140,6 +6648,10 @@ control.controller('videowithdescriptionpageCtrl', function($scope, $state, $roo
                    else if(buttonarray.elements[0].tag_list[0]=="Videos with Description")
                    {
                    $state.go('videowithdescriptionpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Donation")
+                   {
+                   $state.go('donationpage');
                    }
                    $rootScope.mainbuttonid=buttonarray.id;
                    $rootScope.mainbuttontitle=buttonarray.title;
@@ -5239,8 +6751,8 @@ control.controller('videowithdescriptionpageCtrl', function($scope, $state, $roo
                    
                    
                    var confirmPopup = $ionicPopup.confirm({
-                                                          title: 'Church',
-                                                          template: 'Are you sure you want to delete this?'
+                                                          title: 'Church App',
+                                                          template: 'Are you sure to remove this?'
                                                           });
                    confirmPopup.then(function(res) {
                                      if(res) {
@@ -5382,9 +6894,43 @@ control.controller('videowithdescriptionpageCtrl', function($scope, $state, $roo
                    $scope.choose.hide();
                    
                    
+                var stophomepage=0;
+                   
                    if(pagename=="Slider with address")
                    {
+                   
+                     for(i=0;i<$rootScope.allbuttons.length;i++)
+                           {
+                           
+                           for(j=0;j<$rootScope.allbuttons[i].elements.length;j++)
+                           {
+                           if($rootScope.allbuttons[i].elements[j].additional_field=="Slider with address")
+                           {
+                           stophomepage=1;
+                           break;
+                           }
+                           }
+                           }
+                   
+                   
+                   if(stophomepage==1)
+                   {
+                    var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Home Page can create only once'
+   									});
+   									alertPopup.then(function(res) {
+     
+   								});
+                   
+                   stophomepage=0;
+                   
+                   }
+                   else
+                   {
                    $state.go('sliderpagecreate');
+                   }
+                   
                    }
                    else if(pagename=="Images and Text")
                    {
@@ -5394,6 +6940,10 @@ control.controller('videowithdescriptionpageCtrl', function($scope, $state, $roo
                    else if(pagename=="Text list")
                    {
                    $state.go('textlistpagecreate');
+                   }
+                   else if(pagename=="Bible quotes")
+                   {
+                   $state.go('biblequotespagecreate');
                    }
                    else if(pagename=="Images with Description in List")
                    {
@@ -5407,5 +6957,1833 @@ control.controller('videowithdescriptionpageCtrl', function($scope, $state, $roo
                    {
                    $state.go('videowithdescriptionpagecreate');
                    }
+                   else if(pagename=="Donation")
+                   {
+                   $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+                   
+                   
+                   
+                   $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/create_default.json", cache: false, params:{"api_key":localStorage.appkey,"button_id":$rootScope.mainbuttonid,"title":"Donation Title","text":"Donation text", "additional_field":"Donation"}})
+                   .success(function(data, status){
+                            $ionicLoading.hide();  
+                            $state.go('donationpage');    
+                            })
+                   .error(function(data, status) {
+                          
+                          alert(JSON.stringify(data));
+                          $ionicLoading.hide();
+
+                          });
+
+                 }
                    }
                    });
+                   
+                   
+                   
+        control.controller('videowithdescriptioneditpageCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet, $ionicPopup) {
+                   
+                   
+                   
+                   $scope.videowithdescriptioneditvalues={};
+                   $scope.videowithdescriptioneditvalues.title=$rootScope.buttoncontent.elements[0].title;
+                   $scope.videowithdescriptioneditvalues.text=$rootScope.buttoncontent.elements[0].text;
+                   $scope.showeditimageurl=$rootScope.buttoncontent.elements[0].images[0].url;
+                   
+	$scope.tinymceOptions = {
+                   menubar: false,
+                   theme: "modern",
+                   height : "200",
+                   plugins: [
+                             "advlist autolink lists link image charmap print preview anchor",
+                             "searchreplace wordcount visualblocks visualchars code fullscreen",
+                             "insertdatetime table contextmenu ",
+                             "emoticons textcolor"
+                             ],
+                   toolbar1: "insertfile undo redo | styleselect | bold italic"
+                   
+                   };
+                   
+                   
+                           $('#video').change(function () {
+                                                        var alertPopup = $ionicPopup.alert({
+                                                                                           title: 'Church App',
+                                                                                           template: 'Video Selected successfully'
+                                                                                           });
+                                                        alertPopup.then(function(res) {
+                                                                        
+                                                                        });
+                                                        })
+                   
+                if(getparticularbuttonsvar==1)
+                   {
+                   getparticularbuttonsvar=0;
+                   getparticularbuttons()
+                   }
+                   
+                   function getparticularbuttons()
+                   {
+                   $ionicLoading.show({template:"Loading"});
+                   $http({method: "GET", url:'http://build.myappbuilder.com/api/buttons.json', cache: false, params:{'api_key':localStorage.appkey,'id':$rootScope.buttoncontent.id}})
+                   
+                   .success(function(data, status, headers, config) {
+                            $rootScope.buttoncontent=data;
+                            $ionicLoading.hide();
+                            
+                            })
+                   .error(function(data, status, headers, config) {
+                          
+                          
+                          
+                          $ionicLoading.hide();
+                          
+                          });
+                   }
+
+                   
+                   
+                   
+                   
+                   $scope.choosevideo = function(){
+                   $scope.beforevideoupload=true;
+                    $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+					
+					cordova.exec(function(response){
+						
+						$scope.beforevideoupload=false;
+						 var videoframe =response.frame;
+						 
+						 if(videoframe != 'null'){
+						 	$ionicLoading.hide();
+							$rootScope.videopath = response.video;
+					    	$rootScope.videoframe = response.frame;
+					    	var alertPopup = $ionicPopup.alert({
+     						title: 'Church App',
+     						template: ''+$rootScope.videopath +' Video file selected successfully'
+   									});
+   							alertPopup.then(function(res) {
+									
+   									});
+                            	 
+					}
+						else{
+						$ionicLoading.hide();	
+						    var alertPopup = $ionicPopup.alert({
+     						title: 'Church App',
+     						template: 'Please take a snapshot for the video'
+   									});
+   							alertPopup.then(function(res) {
+									
+   									});
+          
+                      
+					}	 
+						
+  	 				},
+            	 function(e){
+            	 alert("error :"+e);
+            	 $ionicLoading.hide();
+            	 }, "Echo_Capture", "echo_capture", ["300", "280", "image", $rootScope.buttoncontent.elements[0].images[0].url, "http://build.myappbuilder.com/api/elements/images.json?", "post", {"api_key":localStorage.appkey,"id":$rootScope.buttoncontent.elements[0].id}])   
+               
+                   
+                   
+                    }
+                   
+                   
+                   
+             $("#selectvideothump").change(function(){
+    
+      					changeimage(this);
+  					});
+                   
+       		function changeimage(input) {
+        		if (input.files && input.files[0]) {
+            	var reader = new FileReader();
+
+            reader.onload = function (e) {
+					$('#selectedimage').attr('src', e.target.result); 
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+  	} 
+                   
+                   
+                   $scope.videowithdescriptionupdate = function(){
+                   if((($("#video").get(0).files[0].size) / 1024 / 1024) <= 10){
+                   $scope.beforevideoupload=true;
+  
+  
+  				if($("#video").get(0).files[0]==undefined || $("#video").get(0).files[0]=="")
+                   {
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Select Video'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   
+                  else if($("#selectvideothump").get(0).files[0]==undefined || $("#selectvideothump").get(0).files[0]=="")
+                   {
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Select Video Thumbnail Image'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+  
+                   
+                   else if($scope.videowithdescriptioneditvalues.title==undefined || $scope.videowithdescriptioneditvalues.title=="")
+                   {
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Title'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                  else if($scope.videowithdescriptioneditvalues.text==undefined || $scope.videowithdescriptioneditvalues.text=="")
+                   {
+                     var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Text'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   
+   
+                   
+                   else
+                   {
+                   
+                   $ionicLoading.show({
+                                       content: '<i class="icon ion-loading-a"></i>&nbsp;Please Wait..',
+                                       animation: 'fade-in',
+                                       showBackdrop: true,
+                                       maxWidth: 200,
+                                       showDelay: 0
+                                       });
+                   
+//                   cordova.exec(function(response){ 
+//					$ionicLoading.hide();
+//					$scope.beforevideoupload=false;
+//					getparticularbuttonsvar=1;
+//					$state.go('videowithdescriptionpage');
+//		 			
+//		 			
+//  
+//  	 }, 
+//  	 function(e){  
+//  	 alert("error :"+JSON.stringify(e));
+//  	 $ionicLoading.hide();
+//  	 }, "BaseVideo", "videocompress",["http://build.myappbuilder.com/api/elements/update_video.json?", "put", {"api_key":localStorage.appkey,"id":$rootScope.buttoncontent.elements[0].id,"title":$scope.videowithdescriptioneditvalues.title,"text":$scope.videowithdescriptioneditvalues.text,"video":$rootScope.videopath,"video_thumbnail":$rootScope.videoframe, "video_frame":$rootScope.videoframe}])
+                           
+                           
+                 
+      						var formData = new FormData();
+                            formData.append('api_key', localStorage.appkey);
+                			formData.append('id', $rootScope.buttoncontent.elements[0].id);
+                			formData.append('title', $scope.videowithdescriptioneditvalues.title);
+                			formData.append('description', $scope.videowithdescriptioneditvalues.text);
+                            formData.append('video', $("#video").get(0).files[0]);
+							formData.append('video_thumbnail', $("#selectvideothump").get(0).files[0]);
+							
+							
+							
+					$http.put('http://build.myappbuilder.com/api/elements/update_video.json', formData, {
+                          transformRequest: angular.identity,
+                          headers: {'Content-Type': undefined}
+                      })
+                      .success(function(data,status, headers, config){
+                              $ionicLoading.hide();
+                                        $scope.beforevideoupload=false;
+                                        getparticularbuttonsvar=1;
+                                        var alertPopup = $ionicPopup.alert({
+                                                                           title: 'Church App',
+                                                                           template: 'Updated Successfully'
+                                                                           });
+                                        alertPopup.then(function(res) {
+                                                        $state.go('videowithdescriptionpage');
+                                                        });
+                                         
+                      })
+                      .error(function(data,status, headers, config){
+                           $ionicLoading.hide(); 
+                          navigator.notification.alert(JSON.stringify(data));
+                      })           
+                 
+                           
+
+                     //       cordova.exec(function(response){
+//                                         $ionicLoading.hide();
+//                                         $scope.beforevideoupload=false;
+//                                         getparticularbuttonsvar=1;
+//                                         var alertPopup = $ionicPopup.alert({
+//                                                                            title: 'Church App',
+//                                                                            template: 'Updated Successfully'
+//                                                                            });
+//                                         alertPopup.then(function(res) {
+//                                                         $state.go('videowithdescriptionpage');
+//                                                         });
+//                                         
+//                                         
+//                                         },
+//                                         function(e){
+//                                         alert(e);
+//                                         $ionicLoading.hide();
+//                                         }, "Thumbnail", "thumbnail",[localStorage.appkey,$rootScope.buttoncontent.elements[0].id,$scope.videowithdescriptioneditvalues.title,$scope.videowithdescriptioneditvalues.text,$('input[name="video"]').val(),"Nothumbnail", "put"])
+//                            
+
+
+                   
+          
+                   
+                   
+                   
+                   
+                   
+                   
+                }   
+                   
+                   }
+                   
+                                      else{
+                   var alertPopup = $ionicPopup.alert({
+                                                      title: 'Church',
+                                                      template: 'Please choose Video File below 10MB!'
+                                                      });
+                   alertPopup.then(function(res) {
+                                   //console.log('Thank you for not eating my delicious ice cream cone');
+                                   });
+                   }
+                   
+          }         
+                   
+                   
+                   $scope.backvideowithdescriptionedit =function()
+                   {
+                   $state.go('videowithdescriptionpage');
+                   }
+                   
+                   });
+
+
+
+
+
+
+
+
+
+control.controller('donationpageCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet, $ionicPopup) {
+                   
+                   
+                   
+          Stripe.setPublishableKey('pk_live_skZ8mxm9gORrvB7qNVXCSRiQ'); 
+
+
+				$scope.donationgetvalues={};
+
+              if(findloginornot==1)
+                   {
+                   $scope.iflogin=true;
+                   
+                   }
+                   else
+                   {
+                   $scope.ifnotlogin=true;
+                   
+                   }
+                   
+                   
+                   $scope.mainmenus=true;
+                   $scope.deletemenus=false;
+                   $scope.editmenus=false;
+
+
+                   
+                $scope.toggleLeftSideMenu = function() {
+                   
+                   $ionicSideMenuDelegate.toggleLeft();
+                };
+                   
+
+                function getallbuttons()
+                   {
+                   $scope.mainmenus=true;
+                   $scope.deletemenus=false;
+                   $scope.editmenus=false;
+                   $ionicLoading.show({template:"Loading"});
+                   $http({method: "GET", url:'http://build.myappbuilder.com/api/buttons.json', cache: false, params:{'api_key':localStorage.appkey}})
+                   
+                   .success(function(data, status, headers, config) {
+                            $rootScope.allbuttons=data;
+                            
+                            
+                            
+                            
+                            
+                            
+                            $ionicLoading.hide();
+                            
+                            })
+                   .error(function(data, status, headers, config) {
+                          
+                          if(status==401)
+                          {
+                          
+                          $state.go('login');
+                          }
+                          
+                          $ionicLoading.hide();
+                          
+                          });
+                   
+                   
+                   }
+                
+$scope.addbutton = function()
+                   {
+                   $scope.modal.show();
+                   }
+                   $scope.closeModal = function()
+                   {
+                   $scope.modal.hide();
+                   }
+                   
+                   $scope.editimageandtextpage = function()
+                   {
+                   $state.go('imageandtextpageedit');
+                   }
+                   $scope.gologin = function()
+                   {
+                   $state.go('login');
+                   };
+                   $scope.logout = function()
+                   {
+                   findloginornot=0;
+                   $scope.ifnotlogin=true;
+                   $scope.iflogin=false;
+                   $scope.ifloginwithreorder=false;
+                   $scope.deletemenus=false;
+                   $scope.editmenus=false;
+                   $scope.reordermenus=false;
+                   $scope.mainmenus=true;
+                   };
+                   
+                   
+                   $scope.clickmainmenu = function(buttonarray)
+                   {
+                   $rootScope.buttoncontent=buttonarray;
+                   
+                   if(buttonarray.elements.length!=0)
+                   {
+                   $rootScope.findpagefromlogin=$rootScope.buttoncontent.elements[0].additional_field;
+                   $rootScope.findpagefromloginforvideoonly=$rootScope.buttoncontent.elements[0].tag_list[0];
+                   }
+                   
+                   if(buttonarray.elements.length==0)
+                   {
+                   if(findloginornot==1)
+                   {
+                   $scope.choose.show();
+                   }
+                   }
+                   
+                   else if(buttonarray.elements[0].additional_field=="Slider with address")
+                   {
+                   
+                   $state.go('home');
+                   }
+                   
+                   else if(buttonarray.elements[0].additional_field=="Images and Text")
+                   {
+                   
+                   $state.go('imageandtextpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Text list")
+                   {
+                   $state.go('textlistpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Bible quotes")
+                   {
+                   $state.go('biblequotespage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Images with Description in List")
+                   {
+                   $state.go('imageswithdescriptionlistpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Images")
+                   {
+                   $state.go('imagespage');
+                   }
+                   else if(buttonarray.elements[0].tag_list[0]=="Videos with Description")
+                   {
+                   $state.go('videowithdescriptionpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Donation")
+                   {
+                   $state.go('donationpage');
+                   }
+                   $rootScope.mainbuttonid=buttonarray.id;
+                   $rootScope.mainbuttontitle=buttonarray.title;
+                   
+                   }
+                   
+                   
+                   
+                   
+                   
+                   $scope.moveItem = function(item, fromIndex, toIndex) {
+                   
+                   //Move the item in the array
+                   $ionicLoading.show({template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'});
+                   $scope.allbuttons.splice(fromIndex, 1);
+                   $scope.allbuttons.splice(toIndex, 0, item);
+                   var ids = $scope.allbuttons.map(function(btn){return btn.id});
+                   
+                   $http.post('http://build.myappbuilder.com/api/buttons/reorder.json', {api_key: localStorage.appkey, ids: ids})
+                   .success(function(data,status,headers,config){
+                            
+                            $ionicLoading.hide();
+                            })
+                   .error(function(data,status,headers,config){
+                          alert(JSON.stringify(data));
+                          $ionicLoading.hide();
+                          })
+                   //console.log(item, fromIndex, toIndex)
+                   };
+                   
+                   
+                   
+                   $scope.deletebuttons = function()
+                   {
+                   $scope.mainmenus=false;
+                   $scope.editmenus=false;
+                   $scope.reordermenus=false;
+                   $scope.ifloginwithreorder=false;
+                   if($scope.deletemenus==true)
+                   {
+                   $scope.deletemenus=false;
+                   $scope.mainmenus=true;
+                   }
+                   else if($scope.deletemenus==false)
+                   {
+                   $scope.deletemenus=true;
+                   }
+                   }
+                   
+                   $scope.editbuttons = function()
+                   {
+                   
+                   $scope.mainmenus=false;
+                   $scope.deletemenus=false;
+                   
+                   
+                   
+                   
+                   if($scope.editmenus==true)
+                   {
+                   $scope.ifloginwithreorder=false;
+                   $scope.editmenus=false;
+                   $scope.reordermenus=false;
+                   $scope.mainmenus=true;
+                   }
+                   else if($scope.editmenus==false)
+                   {
+                   $scope.ifloginwithreorder=true;
+                   $scope.editmenus=true;
+                   $scope.reordermenus=false;
+                   }
+                   }
+                   
+                   $scope.reordermenus=false;
+                   $scope.reorder=function()
+                   {
+                   $scope.mainmenus=false;
+                   $scope.editmenus=false;
+                   $scope.deletemenus=false;
+                   if($scope.reordermenus==true)
+                   {
+                   $scope.mainmenus=true;
+                   $scope.ifloginwithreorder=false;
+                   $scope.reordermenus=false;                   }
+                   else if($scope.reordermenus==false)
+                   {
+                   $scope.mainmenus=false;
+                   $scope.reordermenus=true;
+                   }
+                   }
+                   
+                   
+                   
+                   $scope.deletethisbutton = function(buttonarray)
+                   {
+                   
+                   
+                   
+                   var confirmPopup = $ionicPopup.confirm({
+                                                          title: 'Church App',
+                                                          template: 'Are you sure to remove this?'
+                                                          });
+                   confirmPopup.then(function(res) {
+                                     if(res) {
+                                     $ionicLoading.show({template:"Loading"});
+                                     $http({method: "DELETE", url:'http://build.myappbuilder.com/api/buttons.json', cache: false, params:{'api_key':localStorage.appkey, 'id':buttonarray.id}})
+                                     
+                                     .success(function(data, status, headers, config) {
+                                              
+                                              getallbuttons();
+                                              $ionicLoading.hide();
+                                              
+                                              })
+                                     .error(function(data, status, headers, config) {
+                                            
+                                            alert(status)
+                                            
+                                            $ionicLoading.hide();
+                                            
+                                            });
+                                     } else {
+                                     console.log('You are not sure');
+                                     }
+                                     });
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   }
+                   
+                   
+                   $scope.closechoosemodal = function()
+                   {
+                   $scope.choose.hide();
+                   }
+                   /*Add Button */
+                   
+                   
+                   
+                   
+                   $ionicModal.fromTemplateUrl('templates/buttoncreate.html', {
+                                               scope: $scope,
+                                               animation: 'slide-in-up'
+                                               }).then(function(modal) {
+                                                       $scope.modal = modal;
+                                                       });
+                   $scope.buttoncreatevalues={};
+                   $scope.createbutton = function()
+                   {
+                   $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+                   
+                   $http({method: "POST", url:"http://build.myappbuilder.com/api/buttons/via_url.json", cache: false, params:{"api_key":localStorage.appkey,"title":$scope.buttoncreatevalues.title,"image":"http://s3.amazonaws.com/iPhoneBooks/user/buttons/original/688.png"}})
+                   
+                   .success(function(data, status, headers, config) {
+                            
+                            $scope.buttoncreatevalues.title="";
+                            
+                            $scope.modal.hide();
+                            
+                            $ionicLoading.hide();
+                            
+                            getallbuttons();
+                            
+                            })
+                   .error(function(data, status, headers, config) {
+                          
+                          $ionicLoading.hide();
+                          navigator.notification.alert(status, function(){}, 'Church', 'OK' );
+                          });
+                   }
+                   
+                   
+                   
+                   
+                   /*Edit Button */
+                   $ionicModal.fromTemplateUrl('templates/buttonedit.html', {
+                                               scope: $scope,
+                                               animation: 'slide-in-up'
+                                               }).then(function(modal) {
+                                                       $scope.editbutton = modal;
+                                                       });
+                   $scope.buttoneditvalues={};
+                   
+                   
+                   $scope.editthisbutton = function(buttonarray)
+                   {
+                   
+                   $scope.buttoneditvalues.title=buttonarray.title;
+                   $scope.buttoneditvalues.buttonid=buttonarray.id;
+                   $scope.editbutton.show();
+                   }
+                   $scope.editbuttonclosemodal = function()
+                   {
+                   $scope.editbutton.hide();
+                   }
+                   
+                   $scope.updatethisbutton = function()
+                   {
+                   $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+                   $http({method: "PUT", url:"http://build.myappbuilder.com/api/buttons/via_url.json", cache: false, params:{"api_key":localStorage.appkey,"id":$scope.buttoneditvalues.buttonid,"title":$scope.buttoneditvalues.title}})
+                   
+                   .success(function(data, status, headers, config) {
+                            
+                            
+                            
+                            $scope.editbutton.hide();
+                            
+                            $ionicLoading.hide();
+                            
+                            getallbuttons();
+                            
+                            })
+                   .error(function(data, status, headers, config) {
+                          
+                          $ionicLoading.hide();
+                          navigator.notification.alert(status, function(){}, 'Church', 'OK' );
+                          });
+                   }
+                   
+                   
+                   /*Choose Page */
+                   $ionicModal.fromTemplateUrl('templates/choose.html', {
+                                               scope: $scope,
+                                               animation: 'slide-in-up'
+                                               }).then(function(modal) {
+                                                       $scope.choose = modal;
+                                                       });
+                   $scope.pagesvalue={};
+                   
+                   $scope.choosepage=function(pagename)
+                   {
+                   $scope.choose.hide();
+                   
+                   
+                var stophomepage=0;
+                   
+                   if(pagename=="Slider with address")
+                   {
+                   
+                     for(i=0;i<$rootScope.allbuttons.length;i++)
+                           {
+                           
+                           for(j=0;j<$rootScope.allbuttons[i].elements.length;j++)
+                           {
+                           if($rootScope.allbuttons[i].elements[j].additional_field=="Slider with address")
+                           {
+                           stophomepage=1;
+                           break;
+                           }
+                           }
+                           }
+                   
+                   
+                   if(stophomepage==1)
+                   {
+                    var alertPopup = $ionicPopup.alert({
+                    title: 'Church App',
+                    template: 'Home Page can create only once'
+                    });
+                    alertPopup.then(function(res) {
+     
+                  });
+                   
+                   stophomepage=0;
+                   
+                   }
+                   else
+                   {
+                   $state.go('sliderpagecreate');
+                   }
+                   
+                   }
+                   else if(pagename=="Images and Text")
+                   {
+                   
+                   $state.go('imageandtextcreate');
+                   }
+                   else if(pagename=="Text list")
+                   {
+                   $state.go('textlistpagecreate');
+                   }
+                   else if(pagename=="Bible quotes")
+                   {
+                   $state.go('biblequotespagecreate');
+                   }
+                   else if(pagename=="Images with Description in List")
+                   {
+                   $state.go('imageswithdescriptionpagecreate');
+                   }
+                   else if(pagename=="Images")
+                   {
+                   $state.go('imagespagecreate');
+                   }
+                   else if(pagename=="Videos with Description")
+                   {
+                   $state.go('videowithdescriptionpagecreate');
+                   }
+                   else if(pagename=="Donation")
+                   {
+                   $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+                   
+                   
+                   
+                   $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/create_default.json", cache: false, params:{"api_key":localStorage.appkey,"button_id":$rootScope.mainbuttonid,"title":"Donation Title","text":"Donation text", "additional_field":"Donation"}})
+                   .success(function(data, status){
+                            $ionicLoading.hide();  
+                            $state.go('donationpage');    
+                            })
+                   .error(function(data, status) {
+                          
+                          alert(JSON.stringify(data));
+                          $ionicLoading.hide();
+
+                          });
+
+                 }
+                   }
+
+                  
+    $scope.onSubmit = function () {
+      
+       $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+    };
+
+    $scope.stripeCallback = function (code, result) {
+      
+      var enteredamount=$scope.donationgetvalues.amount;
+      $scope.totalAmount = enteredamount*100;
+     // alert("amount :"+$scope.totalAmount);
+      $scope.hideAlerts();
+      if (result.error) {
+        $scope.stripeError = result.error.message;
+        //alert("error :"+$scope.stripeError);
+      } else {
+        
+        $scope.stripeToken = result.id;
+       //alert("Token :"+$scope.stripeToken);
+        
+        
+        var mail = $scope.donationgetvalues.email;
+       // alert("mail :"+mail)
+
+           $http({method: "GET", url:'http://nuatransmedia.com/song_app/church_stripe/charge.php', cache: false, params:{'token':$scope.stripeToken,'amount':$scope.totalAmount,'mail':mail}})
+ 
+             .success(function(data, status, headers, config) {
+                      $ionicLoading.hide();
+                      //alert("data :"+JSON.stringify(data));
+                      //console.log("data :"+JSON.stringify(data));
+                      //alert(data.church[0].Message)
+                      
+                      
+                       var alertPopup = $ionicPopup.alert({
+                    	title: 'Church App',
+                    	template: data.church[0].Message
+                    	});
+                    	alertPopup.then(function(res) {
+     
+                  		});
+                      
+                      
+                    })
+             .error(function(data, status, headers, config) {
+             		$ionicLoading.hide();
+                   //alert("err :"+JSON.stringify(data));
+                   var alertPopup = $ionicPopup.alert({
+                    	title: 'Church App',
+                    	template: "Please try Again"
+                    	});
+                    	alertPopup.then(function(res) {
+     
+                  		});
+                   });
+        
+      }
+    };
+
+    $scope.hideAlerts = function () {
+      $scope.stripeError = null;
+      $scope.stripeToken = null;
+    }; 
+                   
+                   
+                
+
+                   
+                   $scope.backvideowithdescriptionedit =function()
+                   {
+                   $state.go('videowithdescriptionpage');
+                   }
+                   
+                   });
+
+
+  
+  control.controller('biblequotespagecreateCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet, $ionicPopup) {
+                   
+                   
+                   
+                   $scope.biblequotescreatevalues={};
+                   
+                   
+                   
+                   
+	$scope.tinymceOptions = {
+                   menubar: false,
+                   theme: "modern",
+                   height : "200",
+                   plugins: [
+                             "advlist autolink lists link image charmap print preview anchor",
+                             "searchreplace wordcount visualblocks visualchars code fullscreen",
+                             "insertdatetime table contextmenu ",
+                             "emoticons textcolor"
+                             ],
+                   toolbar1: "insertfile undo redo | styleselect | bold italic"
+                   
+                   };
+                   
+                   
+                   
+                   
+                   
+                   $scope.addbiblequotescontent = function(){
+                   $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+                   
+                   
+                 if($scope.biblequotescreatevalues.title==undefined || $scope.biblequotescreatevalues.title=="")
+                   {
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Title'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                 else if($scope.biblequotescreatevalues.text==undefined || $scope.biblequotescreatevalues.text=="")
+                   {
+                     var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Text'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   
+                   else
+                   {
+                   
+                   $scope.biblequotescreatevalues.text=$scope.biblequotescreatevalues.text.replace(/(&nbsp;|(<([^>]+)>))/ig,'');
+                   
+                   $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/create_default.json", cache: false, params:{"api_key":localStorage.appkey,"button_id":$rootScope.mainbuttonid,"title":$scope.biblequotescreatevalues.title,"text":$scope.biblequotescreatevalues.text, "additional_field":"Bible quotes"}})
+                   .success(function(data, status){
+                           getparticularbuttonsvar=1;
+                                  var alertPopup = $ionicPopup.alert({
+     											title: 'Church App',
+     											template: 'Created Successfully'
+   												});
+   												alertPopup.then(function(res) {
+     								 			$state.go('biblequotespage');
+   												});
+                            
+                            $ionicLoading.hide();
+                            
+
+                            })
+                   .error(function(data, status) {
+                          
+                          alert(JSON.stringify(data));
+                          $ionicLoading.hide();
+                          });
+                   
+                   }
+                   }
+                   
+                   $scope.backbiblequotespage =function()
+                   {
+                   $state.go('biblequotespage');
+                   }
+                   
+                   });
+                   
+                   
+                   
+          control.controller('biblequotespageCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicPopup, $ionicActionSheet, $ionicSlideBoxDelegate, $ionicPopup) {
+                   
+                   
+                  
+                   
+                   if(findloginornot==1)
+                   {
+                   $scope.iflogin=true;
+                   $scope.textlists=false;
+                   
+                   }
+                   else
+                   {
+                   $scope.ifnotlogin=true;
+                   $scope.textlists=true;
+                   
+                   }
+                   
+                   
+                   $scope.mainmenus=true;
+                   $scope.deletemenus=false;
+                   $scope.editmenus=false;
+                   //$scope.allbuttons=$rootScope.allbuttons;
+                   
+                   
+                  
+                   
+                   //getallbuttons();
+                   
+                   function getallbuttons()
+                   {
+                   $scope.mainmenus=true;
+                   $scope.deletemenus=false;
+                   $scope.editmenus=false;
+                   $ionicLoading.show({template:"Loading"});
+                   $http({method: "GET", url:'http://build.myappbuilder.com/api/buttons.json', cache: false, params:{'api_key':localStorage.appkey}})
+                   
+                   .success(function(data, status, headers, config) {
+                            $rootScope.allbuttons=data;
+                            
+                            
+                            
+                            
+                            
+                            
+                            $ionicLoading.hide();
+                            
+                            })
+                   .error(function(data, status, headers, config) {
+                          
+                          if(status==401)
+                          {
+                          
+                          $state.go('login');
+                          }
+                          
+                          $ionicLoading.hide();
+                          
+                          });
+                   
+                   
+                   }
+                   
+                   
+                   
+                   
+                   
+                   if(getparticularbuttonsvar==1)
+                   {
+                   getparticularbuttonsvar=0;
+                   getparticularbuttons()
+                   }
+                   
+                   function getparticularbuttons()
+                   {
+                   
+                   $ionicLoading.show({template:"Loading"});
+                   $http({method: "GET", url:'http://build.myappbuilder.com/api/buttons.json', cache: false, params:{'api_key':localStorage.appkey,'id':$rootScope.buttoncontent.id}})
+                   
+                   .success(function(data, status, headers, config) {
+                            
+                            $rootScope.buttoncontent=data;
+                            
+                            $ionicSlideBoxDelegate.update();
+                            $ionicLoading.hide();
+                            
+                            })
+                   .error(function(data, status, headers, config) {
+                          
+                          
+                          
+                          $ionicLoading.hide();
+                          
+                          });
+                   }
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   $scope.toggleLeftSideMenu = function() {
+                   
+                   $ionicSideMenuDelegate.toggleLeft();
+                   };
+                   
+                   
+                   
+                   
+                   $scope.addbutton = function()
+                   {
+                   $scope.modal.show();
+                   }
+                   $scope.closeModal = function()
+                   {
+                   $scope.modal.hide();
+                   }
+                   
+                   $scope.editimageandtextpage = function()
+                   {
+                   $state.go('imageandtextpageedit');
+                   }
+                   $scope.gologin = function()
+                   {
+                   $state.go('login');
+                   };
+                   $scope.logout = function()
+                   {
+                   findloginornot=0;
+                   $scope.ifnotlogin=true;
+                   $scope.iflogin=false;
+                   $scope.ifloginwithreorder=false;
+                   $scope.deletemenus=false;
+                   $scope.editmenus=false;
+                   $scope.reordermenus=false;
+                   $scope.mainmenus=true;
+                   $scope.textlists=true;
+                   };
+                   $scope.addbiblequotespagego = function()
+                   {
+                   $state.go('biblequotesaddpage');
+                   }
+                   //$scope.textlists=true;
+                   $scope.textlistdeletebutton=false;
+                   $scope.textlisteditbutton=false;
+                   $scope.deletetextlist = function()
+                   {
+                   $scope.textlisteditbutton=false;
+                   if(!$scope.textlistdeletebutton)
+                   {
+                   $scope.textlistdeletebutton=true;
+                   $scope.textlists=false;
+                   }
+                   else
+                   {
+                   $scope.textlistdeletebutton=false;
+                   $scope.textlists=true;
+
+                   }
+                   
+                   }
+                   
+                   
+                   
+
+                   
+                   
+                   
+                   $scope.editthistextlist = function()
+                   {
+                   $scope.textlistdeletebutton=false;
+                   if(!$scope.textlisteditbutton)
+                   {
+                   $scope.textlisteditbutton=true;
+                   $scope.textlists=false;
+                   }
+                   else
+                   {
+                   $scope.textlisteditbutton=false;
+                   $scope.textlists=true;
+                   
+                   }
+                   
+                   }
+                   
+                   
+                   $scope.editthistextcontent = function(elementarry)
+                   {
+                   
+                   $rootScope.biblequoteselementcontent=elementarry;
+                   $state.go('biblequoteseditpage');
+                   }
+                   
+                  
+                   
+                   $scope.clickmainmenu = function(buttonarray)
+                   {
+                   $rootScope.buttoncontent=buttonarray;
+                   
+                   if(buttonarray.elements.length!=0)
+                   {
+                   $rootScope.findpagefromlogin=$rootScope.buttoncontent.elements[0].additional_field;
+                   $rootScope.findpagefromloginforvideoonly=$rootScope.buttoncontent.elements[0].tag_list[0];
+                   }
+                   
+                   if(buttonarray.elements.length==0)
+                   {
+                   if(findloginornot==1)
+                   {
+                   $scope.choose.show();
+                   }
+                   }
+                   
+                   else if(buttonarray.elements[0].additional_field=="Slider with address")
+                   {
+                   
+                   $state.go('home');
+                   }
+                   
+                   else if(buttonarray.elements[0].additional_field=="Images and Text")
+                   {
+                   
+                   $state.go('imageandtextpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Text list")
+                   {
+                   $state.go('textlistpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Bible quotes")
+                   {
+                   $state.go('biblequotespage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Images with Description in List")
+                   {
+                   $state.go('imageswithdescriptionlistpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Images")
+                   {
+                   $state.go('imagespage');
+                   }
+                   else if(buttonarray.elements[0].tag_list[0]=="Videos with Description")
+                   {
+                   $state.go('videowithdescriptionpage');
+                   }
+                   else if(buttonarray.elements[0].additional_field=="Donation")
+                   {
+                   $state.go('donationpage');
+                   }
+                   $rootScope.mainbuttonid=buttonarray.id;
+                   $rootScope.mainbuttontitle=buttonarray.title;
+                   
+                   }
+                   
+                   
+                   
+                   
+                   
+                   $scope.moveItem = function(item, fromIndex, toIndex) {
+                   
+                   //Move the item in the array
+                   $ionicLoading.show({template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'});
+                   $scope.allbuttons.splice(fromIndex, 1);
+                   $scope.allbuttons.splice(toIndex, 0, item);
+                   var ids = $scope.allbuttons.map(function(btn){return btn.id});
+                   
+                   $http.post('http://build.myappbuilder.com/api/buttons/reorder.json', {api_key: localStorage.appkey, ids: ids})
+                   .success(function(data,status,headers,config){
+                            
+                            $ionicLoading.hide();
+                            })
+                   .error(function(data,status,headers,config){
+                          alert(JSON.stringify(data));
+                          $ionicLoading.hide();
+                          })
+                   //console.log(item, fromIndex, toIndex)
+                   };
+                   
+                   
+                   
+                   $scope.deletebuttons = function()
+                   {
+                   $scope.mainmenus=false;
+                   $scope.editmenus=false;
+                   $scope.reordermenus=false;
+                   $scope.ifloginwithreorder=false;
+                   if($scope.deletemenus==true)
+                   {
+                   $scope.deletemenus=false;
+                   $scope.mainmenus=true;
+                   }
+                   else if($scope.deletemenus==false)
+                   {
+                   $scope.deletemenus=true;
+                   }
+                   }
+                   
+                   $scope.editbuttons = function()
+                   {
+                   
+                   $scope.mainmenus=false;
+                   $scope.deletemenus=false;
+                   
+                   
+                   
+                   
+                   if($scope.editmenus==true)
+                   {
+                   $scope.ifloginwithreorder=false;
+                   $scope.editmenus=false;
+                   $scope.reordermenus=false;
+                   $scope.mainmenus=true;
+                   }
+                   else if($scope.editmenus==false)
+                   {
+                   $scope.ifloginwithreorder=true;
+                   $scope.editmenus=true;
+                   $scope.reordermenus=false;
+                   }
+                   }
+                   
+                   $scope.reordermenus=false;
+                   $scope.reorder=function()
+                   {
+                   $scope.mainmenus=false;
+                   $scope.editmenus=false;
+                   $scope.deletemenus=false;
+                   if($scope.reordermenus==true)
+                   {
+                   $scope.mainmenus=true;
+                   $scope.ifloginwithreorder=false;
+                   $scope.reordermenus=false;                   }
+                   else if($scope.reordermenus==false)
+                   {
+                   $scope.mainmenus=false;
+                   $scope.reordermenus=true;
+                   }
+                   }
+                   
+                   
+                   
+                   $scope.deletethistextlist = function(elementarray)
+                   {
+                   
+                   
+                   
+                   var confirmPopup = $ionicPopup.confirm({
+                                                          title: 'Church App',
+                                                          template: 'Are you sure to remove this?'
+                                                          });
+                   confirmPopup.then(function(res) {
+                                     if(res) {
+                                     $ionicLoading.show({template:"Loading"});
+                                     $http({method: "DELETE", url:'http://build.myappbuilder.com/api/elements.json', cache: false, params:{'api_key':localStorage.appkey, 'id':elementarray.id}})
+                                     
+                                     .success(function(data, status, headers, config) {
+                                              
+                                              getparticularbuttons();
+                                              $ionicLoading.hide();
+                                              
+                                              })
+                                     .error(function(data, status, headers, config) {
+                                            
+                                            alert(data)
+                                            
+                                            $ionicLoading.hide();
+                                            
+                                            });
+                                     } else {
+                                     console.log('You are not sure');
+                                     }
+                                     });
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   }
+                   
+                   
+                   $scope.closechoosemodal = function()
+                   {
+                   $scope.choose.hide();
+                   }
+                   /*Add Button */
+                   
+                   
+                   
+                   
+                   $ionicModal.fromTemplateUrl('templates/buttoncreate.html', {
+                                               scope: $scope,
+                                               animation: 'slide-in-up'
+                                               }).then(function(modal) {
+                                                       $scope.modal = modal;
+                                                       });
+                   $scope.buttoncreatevalues={};
+                   $scope.createbutton = function()
+                   {
+                   $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+                   
+                   $http({method: "POST", url:"http://build.myappbuilder.com/api/buttons/via_url.json", cache: false, params:{"api_key":localStorage.appkey,"title":$scope.buttoncreatevalues.title,"image":"http://s3.amazonaws.com/iPhoneBooks/user/buttons/original/688.png"}})
+                   
+                   .success(function(data, status, headers, config) {
+                            
+                            $scope.buttoncreatevalues.title="";
+                            
+                            $scope.modal.hide();
+                            
+                            $ionicLoading.hide();
+                            
+                            getallbuttons();
+                            
+                            })
+                   .error(function(data, status, headers, config) {
+                          
+                          $ionicLoading.hide();
+                          navigator.notification.alert(status, function(){}, 'Church', 'OK' );
+                          });
+                   }
+                   
+                   
+                   
+                   
+                   /*Edit Button */
+                   $ionicModal.fromTemplateUrl('templates/buttonedit.html', {
+                                               scope: $scope,
+                                               animation: 'slide-in-up'
+                                               }).then(function(modal) {
+                                                       $scope.editbutton = modal;
+                                                       });
+                   $scope.buttoneditvalues={};
+                   
+                   
+                   $scope.editthisbutton = function(buttonarray)
+                   {
+                   
+                   $scope.buttoneditvalues.title=buttonarray.title;
+                   $scope.buttoneditvalues.buttonid=buttonarray.id;
+                   $scope.editbutton.show();
+                   }
+                   $scope.editbuttonclosemodal = function()
+                   {
+                   $scope.editbutton.hide();
+                   }
+                   
+                   $scope.updatethisbutton = function()
+                   {
+                   $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+                   $http({method: "PUT", url:"http://build.myappbuilder.com/api/buttons/via_url.json", cache: false, params:{"api_key":localStorage.appkey,"id":$scope.buttoneditvalues.buttonid,"title":$scope.buttoneditvalues.title}})
+                   
+                   .success(function(data, status, headers, config) {
+                            
+                            
+                            
+                            $scope.editbutton.hide();
+                            
+                            $ionicLoading.hide();
+                            
+                            getallbuttons();
+                            
+                            })
+                   .error(function(data, status, headers, config) {
+                          
+                          $ionicLoading.hide();
+                          navigator.notification.alert(status, function(){}, 'Church', 'OK' );
+                          });
+                   }
+                   
+                   
+                   
+                   
+                   
+                   $scope.deletethisbutton = function(buttonarray)
+                   {
+                   
+                   
+                   
+                   var confirmPopup = $ionicPopup.confirm({
+                                                          title: 'Church App',
+                                                          template: 'Are you sure to remove this?'
+                                                          });
+                   confirmPopup.then(function(res) {
+                                     if(res) {
+                                     $ionicLoading.show({template:"Loading"});
+                                     $http({method: "DELETE", url:'http://build.myappbuilder.com/api/buttons.json', cache: false, params:{'api_key':localStorage.appkey, 'id':buttonarray.id}})
+                                     
+                                     .success(function(data, status, headers, config) {
+                                              
+                                              getallbuttons();
+                                              $ionicLoading.hide();
+                                              
+                                              })
+                                     .error(function(data, status, headers, config) {
+                                            
+                                            alert(status)
+                                            
+                                            $ionicLoading.hide();
+                                            
+                                            });
+                                     } else {
+                                     console.log('You are not sure');
+                                     }
+                                     });
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   }
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   /*Choose Page */
+                   $ionicModal.fromTemplateUrl('templates/choose.html', {
+                                               scope: $scope,
+                                               animation: 'slide-in-up'
+                                               }).then(function(modal) {
+                                                       $scope.choose = modal;
+                                                       });
+                   $scope.pagesvalue={};
+                   
+                   $scope.choosepage=function(pagename)
+                   {
+                   $scope.choose.hide();
+                   
+                   
+                  var stophomepage=0;
+                   
+                   if(pagename=="Slider with address")
+                   {
+                   
+                     for(i=0;i<$rootScope.allbuttons.length;i++)
+                           {
+                           
+                           for(j=0;j<$rootScope.allbuttons[i].elements.length;j++)
+                           {
+                           if($rootScope.allbuttons[i].elements[j].additional_field=="Slider with address")
+                           {
+                           stophomepage=1;
+                           break;
+                           }
+                           }
+                           }
+                   
+                   
+                   if(stophomepage==1)
+                   {
+                    var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Home Page can create only once'
+   									});
+   									alertPopup.then(function(res) {
+     
+   								});
+                   
+                   stophomepage=0;
+                   
+                   }
+                   else
+                   {
+                   $state.go('sliderpagecreate');
+                   }
+                   
+                   }
+                   else if(pagename=="Images and Text")
+                   {
+                   
+                   $state.go('imageandtextcreate');
+                   }
+                   else if(pagename=="Text list")
+                   {
+                   $state.go('textlistpagecreate');
+                   }
+                   else if(pagename=="Bible quotes")
+                   {
+                   $state.go('biblequotespagecreate');
+                   }
+                   else if(pagename=="Images with Description in List")
+                   {
+                   
+                   $state.go('imageswithdescriptionpagecreate');
+                   }
+                   else if(pagename=="Images")
+                   {
+                   $state.go('imagespagecreate');
+                   }
+                   else if(pagename=="Videos with Description")
+                   {
+                   $state.go('videowithdescriptionpagecreate');
+                   }
+                   else if(pagename=="Donation")
+                   {
+                   $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+                   
+                   
+                   
+                   $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/create_default.json", cache: false, params:{"api_key":localStorage.appkey,"button_id":$rootScope.mainbuttonid,"title":"Donation Title","text":"Donation text", "additional_field":"Donation"}})
+                   .success(function(data, status){
+                            $ionicLoading.hide();  
+                            $state.go('donationpage');    
+                            })
+                   .error(function(data, status) {
+                          
+                          alert(JSON.stringify(data));
+                          $ionicLoading.hide();
+
+                          });
+
+                 }
+                   }
+                   });  
+                   
+                   
+                   
+          control.controller('biblequotesaddpageCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet,$ionicPopup) {
+                   
+                   
+                   
+                   $scope.biblequotesaddvalues={};
+                   
+ 
+                   
+	$scope.tinymceOptions = {
+                   menubar: false,
+                   theme: "modern",
+                   height : "200",
+                   plugins: [
+                             "advlist autolink lists link image charmap print preview anchor",
+                             "searchreplace wordcount visualblocks visualchars code fullscreen",
+                             "insertdatetime table contextmenu ",
+                             "emoticons textcolor"
+                             ],
+                   toolbar1: "insertfile undo redo | styleselect | bold italic"
+                   
+                   };
+                   
+                   
+                   
+
+
+                   
+          
+                   
+                   
+                   $scope.addbiblequotescontent = function(){
+                  if($scope.biblequotesaddvalues.title==undefined || $scope.biblequotesaddvalues.title=="")
+                   {
+                   var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Title'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                 else if($scope.biblequotesaddvalues.text==undefined || $scope.biblequotesaddvalues.text=="")
+                   {
+                     var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Text'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   
+                   else
+                   {
+                 $scope.biblequotesaddvalues.text=$scope.biblequotesaddvalues.text.replace(/(&nbsp;|(<([^>]+)>))/ig,'');
+                 
+                   $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+                   $http({method: "POST", url:"http://build.myappbuilder.com/api/elements/create_default.json", cache: false, params:{"api_key":localStorage.appkey,"button_id":$rootScope.buttoncontent.id,"title":$scope.biblequotesaddvalues.title,"text":$scope.biblequotesaddvalues.text}})
+                   
+                   .success(function(data, status, headers, config) {
+                            
+                            
+                           $ionicLoading.hide();
+                            
+                            getparticularbuttonsvar=1;
+                            
+                                  var alertPopup = $ionicPopup.alert({
+     											title: 'Church App',
+     											template: 'Created Successfully'
+   												});
+   												alertPopup.then(function(res) {
+     								 			$state.go('biblequotespage');
+   												});
+                            
+                            
+    
+                            
+                            
+                            
+                            
+                            
+                            
+                            })
+                   .error(function(data, status, headers, config) {
+                          alert(JSON.stringify(data));
+                          $ionicLoading.hide();
+                          
+                          });
+                          
+                    }      
+                          
+
+                   }
+                   
+                   $scope.backbiblequotesaddpage =function()
+                   {
+                   $state.go('biblequotespage');
+                   }
+                   
+                   });                
+                   
+         
+        control.controller('biblequoteseditpageCtrl', function($scope, $state, $rootScope, $ionicPopover, $ionicSideMenuDelegate, $sce, $ionicLoading, $http, $location, $ionicModal, $ionicActionSheet,$ionicPopup) {
+                   
+                  
+                   
+                   $scope.biblequoteseditvalues={};
+                   
+                   
+                   $scope.biblequoteseditvalues.title=$rootScope.biblequoteselementcontent.title;
+                   
+                   
+                   $scope.biblequoteseditvalues.text=$rootScope.biblequoteselementcontent.text;
+                   
+                   
+                   
+                   
+	$scope.tinymceOptions = {
+                   menubar: false,
+                   theme: "modern",
+                   height : "200",
+                   plugins: [
+                             "advlist autolink lists link image charmap print preview anchor",
+                             "searchreplace wordcount visualblocks visualchars code fullscreen",
+                             "insertdatetime table contextmenu ",
+                             "emoticons textcolor"
+                             ],
+                   toolbar1: "insertfile undo redo | styleselect | bold italic"
+                   
+                   };
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   $scope.editbiblequotescontent = function(){
+                   if($scope.biblequoteseditvalues.title==undefined || $scope.biblequoteseditvalues.title=="")
+                   {
+                      var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Title'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   else if($scope.biblequoteseditvalues.text==undefined || $scope.biblequoteseditvalues.text=="")
+                   {
+                      var alertPopup = $ionicPopup.alert({
+     								title: 'Church App',
+     								template: 'Please Enter Text'
+   									});
+   									alertPopup.then(function(res) {
+									
+   									});
+                   }
+                   
+                   else
+                   {
+                   $scope.biblequoteseditvalues.text=$scope.biblequoteseditvalues.text.replace(/(&nbsp;|(<([^>]+)>))/ig,'');
+                   
+                  
+                   
+                   $ionicLoading.show({
+                                      template: '<i class="icon ion-loading-a"></i>&nbsp;Please wait...'
+                                      });
+                   $http({method: "PUT", url:"http://build.myappbuilder.com/api/elements/update_default.json", cache: false, params:{"api_key":localStorage.appkey,"id":$rootScope.biblequoteselementcontent.id,"title":$scope.biblequoteseditvalues.title,"text":$scope.biblequoteseditvalues.text}})
+                   
+                   .success(function(data, status, headers, config) {
+                            
+                            
+                            
+                            
+                            $ionicLoading.hide();
+                            
+                            getparticularbuttonsvar=1;
+                            
+                             var alertPopup = $ionicPopup.alert({
+     											title: 'Church App',
+     											template: 'Updated Successfully'
+   												});
+   												alertPopup.then(function(res) {
+     								 			$state.go('biblequotespage');
+   												});
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            })
+                   .error(function(data, status, headers, config) {
+                          alert(JSON.stringify(data));
+                          $ionicLoading.hide();
+                          
+                          });
+                          
+                    }
+                   
+                   }
+                   
+                   
+                   
+                   
+                   
+                   
+                   
+                   $scope.backbiblequotesaddpage =function()
+                   {
+                   
+                   $state.go('biblequotespage');
+                   }
+                   
+                   });           

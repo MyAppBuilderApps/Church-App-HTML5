@@ -1,4 +1,4 @@
-**Church WEB App**
+**Church App**
 
 This is used as the default app template to create Church App. This Mobile friendly design makes it easy for users to create a new Church App.
 
@@ -11,7 +11,8 @@ Sample app is built and tested with Cordova 5.0.0 and we only support Cordova ve
 **Required reading**
 
 Please see the Getting Started with WEB [here]
-(http://ionicframework.com/)
+(http://ionicframework.com/), 
+(http://cordova.apache.org/docs/en/5.0.0/guide_platforms_android_index.md.html#Android%20Platform%20Guide).
 
 
 

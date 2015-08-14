@@ -1,7 +1,7 @@
 
 
 <ion-view>
-    <ion-nav-title>
+	<ion-nav-title>
         {{mainbuttontitle}}
     </ion-nav-title>
     <ion-nav-buttons side="left">
@@ -13,81 +13,84 @@
     <ion-side-menus>
         <ion-side-menu-content style="background-color:#fee8c1;">
             
-    <ion-content>
-        <ion-list ng-show="imageanddescriptionlists">
-        <ion-item ng-repeat="item in $root.buttoncontent.elements" class="item item-text-wrap">
-            <img  ng-src="{{item.images[0].url}}" style="width:100%;height:auto;max-height: 25%;">
-                <h3 style="color:#666;"> {{item.title}} </h3>
-                <p  ng-bind-html="item.text" style="text-align: justify;
+    <ion-content style="color:#000;text-shadow:none;">
+        <ion-list ng-show="textlists" style="color:#000;text-shadow:none;">
+        <ion-item ng-repeat="item in $root.buttoncontent.elements" class="item item-text-wrap" style="color:#000;text-shadow:none;">
+                           
+                        
+                           <blockquote>
+                                    <p ng-bind-html="item.text" style="text-align: justify;
     text-justify: inter-word;"></p>
-                
-               
-                
+                                    <small>{{item.title | capitalize}}</small>
+                            </blockquote>
+
+                            <!-- <p class="quote" ng-bind-html="item.text"></p>  
+                            <cite>{{item.title | capitalize}}</cite> -->
+                           
+					         
+						
         </ion-item>
         </ion-list>
-        
-        <ion-list ng-show="imageanddescriptiondeletebutton">
-            <ion-item ng-repeat="item in $root.buttoncontent.elements" class="item item-text-wrap" ng-click="deletethisimageanddescriptioncontent(item);">
-                <img  ng-src="{{item.images[0].url}}" style="width:100%;height:auto;max-height: 25%;">
-                    <div class="row">
-                        <div class="col col-90">
-                    <h3 style="color:#666;"> {{item.title}} </h3>
-                    <p  ng-bind-html="item.text" style="text-align: justify;
-    text-justify: inter-word;"></p>
-                    </div>
-                    <div class="col col-10">
-                    <i class="icon ion-trash-a custom-icon"></i>
-                    </div>
-                    </div>
-                    </ion-item>
-        </ion-list>
-        
         <ion-list ng-show="iflogin">
-            <ion-item ng-repeat="item in $root.buttoncontent.elements" class="item item-text-wrap">
-            <img  ng-src="{{item.images[0].url}}" style="width:100%;height:auto;max-height: 25%;">
-                <h3 style="color:#666;"> {{item.title}} </h3>
-                <p  ng-bind-html="item.text" style="text-align: justify;
+        <ion-item ng-repeat="item in $root.buttoncontent.elements" class="item item-text-wrap">
+                                <blockquote>
+                                    <p ng-bind-html="item.text" style="text-align: justify;
     text-justify: inter-word;"></p>
-                    <div class="row">
+                                    <cite>{{item.title | capitalize}}</cite>
+                                </blockquote>
+
+                        <div class="row">
                             <div class="col col-50">
                             </div>
                             <div class="col col-10">
                             </div>
-                            <div class="col col-20" ng-click="deletethisimageanddescriptioncontent(item);">
+                            <div class="col col-20" ng-click="deletethistextlist(item);">
                              
                              <button class="button button-assertive button-clear">
                             	<i class="icon ion-trash-a" ></i>
                         	</button>
                             </div>
-                            <div class="col col-20" ng-click="editthisimageanddescriptioncontent(item);">
-                           
+                            <div class="col col-20" ng-click="editthistextcontent(item);">
+                             
                              <button class="button button-assertive button-clear">
                             	<i class="icon ion-edit" ></i>
                         	</button>
                             </div>
-                    </div>
-               
-                
+                        </div>
         </ion-item>
+        </ion-list>
+        
+        <ion-list ng-show="textlisteditbutton">
+            <ion-item ng-repeat="item in $root.buttoncontent.elements" class="item item-text-wrap" ng-click="editthistextcontent(item);">
+                <div class="row">
+                <div class="col col-90">
+                <h4> {{item.title | uppercase}} </h4>
+                <p  ng-bind-html="item.text"></p>
+                </div>
+                <div class="col col-10">
+                <i class="icon ion-edit custom-icon"></i>
+                </div>
+                </div>
+            </ion-item>
         </ion-list><br /><br /><br /><br /><br />
     </ion-content>
             <div class="bar bar-footer" style="background:none;" ng-show="iflogin">
-                
+              
                 <div class="row" style="margin-right:7%;">
                     <div class="col col-20">
-                        <button class="button button-small ion-ios7-plus-outline button-positive" ng-click="addimagewithdescriptionpagego()" style="margin-top:-8px;">
+                        <button class="button button-small ion-ios7-plus-outline button-positive" ng-click="addbiblequotespagego()" style="margin-top:-8px;">
                             &nbsp;&nbsp;&nbsp;&nbsp;Add&nbsp;&nbsp;&nbsp;&nbsp;
                         </button>
                     </div>
                     <div class="col col-20"></div>
                     <div class="col col-20">
-                        <!--<button class="button button-small ion-ios7-plus-outline button-royal" ng-click="deleteimageanddescriptionlist()" style="margin-top:4px;">
+                        <!--<button class="button button-small ion-ios7-plus-outline button-positive" ng-click="deletetextlist()" style="margin-top:4px;">
                             &nbsp;&nbsp;Delete&nbsp;&nbsp;
                         </button>-->
                     </div>
                     <div class="col col-20"></div>
                     <div class="col col-20">
-                        <!--<button class="button button-small ion-ios7-plus-outline button-positive" ng-click="editthisimageanddescriptionlist()" style="margin-top:4px;">
+                        <!--<button class="button button-small ion-ios7-plus-outline button-positive" ng-click="editthistextlist()" style="margin-top:4px;">
                             &nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;
                         </button>-->
                     </div>

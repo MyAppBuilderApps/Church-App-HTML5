@@ -2978,7 +2978,7 @@ a.subdued {
   .action-sheet-open .action-sheet-backdrop {
     pointer-events: auto; }
 
-.platform-android .action-sheet-backdrop.active {
+/*.platform-android .action-sheet-backdrop.active {
   background-color: rgba(0, 0, 0, 0.2); }
 .platform-android .action-sheet {
   margin: 0; }
@@ -3000,7 +3000,7 @@ a.subdued {
 .platform-android .action-sheet-cancel {
   display: none; }
 .platform-android .action-sheet-has-icons .button {
-  padding-left: 56px; }
+  padding-left: 56px; }*/
 
 .backdrop {
   position: fixed;
@@ -3088,8 +3088,9 @@ a.subdued {
     background-color: #f8f8f8;
     background-image: linear-gradient(0deg, #b2b2b2, #b2b2b2 50%, transparent 50%);
     color: #444; }
+    /*mine* color:#fff*/
     .bar.bar-stable .title {
-      color: #444; }
+      color: #fff; }
     .bar.bar-stable.bar-footer {
       background-image: linear-gradient(180deg, #b2b2b2, #b2b2b2 50%, transparent 50%); }
   .bar.bar-positive {
@@ -3462,7 +3463,8 @@ a.subdued {
 .bar-subfooter {
   bottom: 44px;
   display: block;
-  height: 44px; }
+  height: 44px; 
+}
 
 .nav-bar-block {
   position: absolute;
@@ -4642,7 +4644,7 @@ ion-tabs.tabs-color-active-dark .tab-item {
 .item {
   border-color: #ddd;
   background-color: #fff;
-  color: #444;
+  color: #000;
   position: relative;
   z-index: 2;
   display: block;
@@ -4665,9 +4667,11 @@ ion-tabs.tabs-color-active-dark .tab-item {
     margin: 0 0 3px 0;
     font-size: 10px; }
   .item p {
-    color: #666;
+    color: #000;
     font-size: 14px;
     margin-bottom: 2px; }
+
+    
   .item h1:last-child, .item h2:last-child, .item h3:last-child, .item h4:last-child, .item h5:last-child, .item h6:last-child, .item p:last-child {
     margin-bottom: 0; }
   .item .badge {
@@ -6636,16 +6640,19 @@ progress {
         background-color: #b2b2b2;
         box-shadow: none;
         color: #fff; }
+
+
+   /*mine #6d6d6d */     
   .button.button-positive {
-    border-color: #0c63ee;
-    background-color: #387ef5;
+    border-color: #6d6d6d;
+    background-color: #6d6d6d;
     color: #fff; }
     .button.button-positive:hover {
       color: #fff;
       text-decoration: none; }
     .button.button-positive.active, .button.button-positive.activated {
-      border-color: #0c63ee;
-      background-color: #0c63ee;
+      border-color: #383030;
+      background-color: #383030;
       box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
     .button.button-positive.button-clear {
       border-color: transparent;
@@ -6691,15 +6698,15 @@ progress {
         box-shadow: none;
         color: #fff; }
   .button.button-assertive {
-    border-color: #e42012;
-    background-color: #ef473a;
+    border-color: #FF6600;
+    background-color: #FF6600;
     color: #fff; }
     .button.button-assertive:hover {
       color: #fff;
       text-decoration: none; }
     .button.button-assertive.active, .button.button-assertive.activated {
-      border-color: #e42012;
-      background-color: #e42012;
+      border-color: #FF6600;
+      background-color: #FF6600;
       box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
     .button.button-assertive.button-clear {
       border-color: transparent;

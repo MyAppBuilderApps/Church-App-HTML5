@@ -13,87 +13,53 @@
     <ion-side-menus>
         <ion-side-menu-content style="background-color:#fee8c1;">
             
-    <ion-content>
-        <ion-list ng-show="imageanddescriptionlists">
-        <ion-item ng-repeat="item in $root.buttoncontent.elements" class="item item-text-wrap">
-            <img  ng-src="{{item.images[0].url}}" style="width:100%;height:auto;max-height: 25%;">
-                <h3 style="color:#666;"> {{item.title}} </h3>
-                <p  ng-bind-html="item.text" style="text-align: justify;
-    text-justify: inter-word;"></p>
-                
-               
-                
-        </ion-item>
-        </ion-list>
-        
-        <ion-list ng-show="imageanddescriptiondeletebutton">
-            <ion-item ng-repeat="item in $root.buttoncontent.elements" class="item item-text-wrap" ng-click="deletethisimageanddescriptioncontent(item);">
-                <img  ng-src="{{item.images[0].url}}" style="width:100%;height:auto;max-height: 25%;">
-                    <div class="row">
-                        <div class="col col-90">
-                    <h3 style="color:#666;"> {{item.title}} </h3>
-                    <p  ng-bind-html="item.text" style="text-align: justify;
-    text-justify: inter-word;"></p>
-                    </div>
-                    <div class="col col-10">
-                    <i class="icon ion-trash-a custom-icon"></i>
-                    </div>
-                    </div>
-                    </ion-item>
-        </ion-list>
-        
-        <ion-list ng-show="iflogin">
-            <ion-item ng-repeat="item in $root.buttoncontent.elements" class="item item-text-wrap">
-            <img  ng-src="{{item.images[0].url}}" style="width:100%;height:auto;max-height: 25%;">
-                <h3 style="color:#666;"> {{item.title}} </h3>
-                <p  ng-bind-html="item.text" style="text-align: justify;
-    text-justify: inter-word;"></p>
-                    <div class="row">
-                            <div class="col col-50">
-                            </div>
-                            <div class="col col-10">
-                            </div>
-                            <div class="col col-20" ng-click="deletethisimageanddescriptioncontent(item);">
+            <ion-content  overflow-scroll="true">
+         
+            <h4 align="center">{{$root.buttoncontent.elements[0].title}}</h4>
+
+
+                     
+                     
+                     
+<!--                     <iframe class="embed-responsive-item" ng-src="{{$root.buttoncontent.elements[0].video.url | trustUrl}}" webkitallowfullscreen mozallowfullscreen allowfullscreen style="width:100%;height:auto;background:url({{$root.buttoncontent.elements[0].images[0].url}}) no-repeat"></iframe>-->
+
+                     
+                     <video poster="{{$root.buttoncontent.elements[0].images[0].url}}" controls style="width:100%;height:auto;">
+                         <source src="{{$root.buttoncontent.elements[0].video.url | trustUrl}}">
                              
-                             <button class="button button-assertive button-clear">
-                            	<i class="icon ion-trash-a" ></i>
-                        	</button>
-                            </div>
-                            <div class="col col-20" ng-click="editthisimageanddescriptioncontent(item);">
-                           
-                             <button class="button button-assertive button-clear">
-                            	<i class="icon ion-edit" ></i>
-                        	</button>
-                            </div>
-                    </div>
-               
-                
-        </ion-item>
-        </ion-list><br /><br /><br /><br /><br />
-    </ion-content>
+                             
+                     </video>
+                     
+                       <!--<img ng-src="{{$root.buttoncontent.elements[0].images[0].url}}" style="width:100%;height:100%;">
+                       <div  style="width:20%;height:30%;margin-top:-47%;margin-left:39%;" align="center">
+                       <img src="img/play_btn.png" style="width:100%;height:100%;">
+                       </div>-->
+                 
+                  <div ng-bind-html="$root.buttoncontent.elements[0].text" class="padding" style="text-align: justify;
+    text-justify: inter-word;">
+                        
+                  </div>
+                  
+                  <!--<div style="height: 280px;background-image: url('{{$root.buttoncontent.elements[0].images[0].url}}');background-size: cover;background-repeat: no-repeat;background-position: 10% 10%;" ng-click="videoclick($root.buttoncontent);"></div>--> 
+
+                    <!--  <video controls="controls" preload="metadata" autoplay="autoplay" webkit-playsinline="webkit-playsinline" class="videoPlayer" width="100%" height="50%;"><source ng-src="{{$root.buttoncontent.elements[0].video.url  | trustUrl}}" style="width:100%;height:auto;"/>
+                     </video> -->
+
+           <!--           <video controls="controls" preload="metadata" autoplay="autoplay" webkit-playsinline="webkit-playsinline" class="videoPlayer" width="100%" height="50%;">
+     <source ng-src="{{$root.buttoncontent.elements[0].video.url  | trustUrl}}" dynamic-url dynamic-url-src="">
+ </video>  -->
+                  <!--  <iframe class="embed-responsive-item" ng-src="{{$root.buttoncontent.elements[0].video.url  | trustUrl}}" dynamic-url dynamic-url-src="" webkitallowfullscreen mozallowfullscreen allowfullscreen style="width:100%;height:auto;"></iframe> -->
+
+                     <!--<iframe class="embed-responsive-item" src="http://video-js.zencoder.com/oceans-clip.mp4" webkitallowfullscreen mozallowfullscreen allowfullscreen style="width:100%;height:auto;"></iframe> -->
+
+    
+                    
+            </ion-content>
             <div class="bar bar-footer" style="background:none;" ng-show="iflogin">
-                
-                <div class="row" style="margin-right:7%;">
-                    <div class="col col-20">
-                        <button class="button button-small ion-ios7-plus-outline button-positive" ng-click="addimagewithdescriptionpagego()" style="margin-top:-8px;">
-                            &nbsp;&nbsp;&nbsp;&nbsp;Add&nbsp;&nbsp;&nbsp;&nbsp;
-                        </button>
-                    </div>
-                    <div class="col col-20"></div>
-                    <div class="col col-20">
-                        <!--<button class="button button-small ion-ios7-plus-outline button-royal" ng-click="deleteimageanddescriptionlist()" style="margin-top:4px;">
-                            &nbsp;&nbsp;Delete&nbsp;&nbsp;
-                        </button>-->
-                    </div>
-                    <div class="col col-20"></div>
-                    <div class="col col-20">
-                        <!--<button class="button button-small ion-ios7-plus-outline button-positive" ng-click="editthisimageanddescriptionlist()" style="margin-top:4px;">
-                            &nbsp;&nbsp;&nbsp;&nbsp;Edit&nbsp;&nbsp;&nbsp;&nbsp;
-                        </button>-->
-                    </div>
-                </div>
-                
-               
+                <h1 class="title"> </h1>
+                <button class="button button-small ion-ios7-plus-outline button-positive" ng-click="videowithdescriptioneditpage()" style="margin-top:4px;">
+                    &nbsp;&nbsp;Edit&nbsp;&nbsp;
+                </button>
             </div>
         </ion-side-menu-content>
         

@@ -1,25 +1,29 @@
 
-
 <ion-view>
-    <ion-nav-title>
-        {{mainbuttontitle | capitalize}}
+    <ion-nav-title class="custom-white">
+        {{mainbuttontitle}}
     </ion-nav-title>
     <ion-nav-buttons side="left">
-        <button menu-toggle="left" class="button button-icon icon ion-navicon" on-touch="toggleLeftSideMenu()"></button>
+        <button menu-toggle="left" class="button button-icon button-clear ion-navicon nav-icon" on-touch="toggleLeftSideMenu()"></button>
     </ion-nav-buttons>
     
     <ion-nav-buttons side="right">
-        <i class="icon ion-ios-plus-outline custom-addapp" ui-sref="appcreate" ng-show="iflogin"></i>
+        <!--<i class="icon ion-ios-plus-outline custom-addapp" ui-sref="appcreate" ng-show="iflogin"></i>
+        <button class="button button-assertive" ui-sref="appcreate" ng-show="iflogin">
+        New App
+      </button>-->
     </ion-nav-buttons>
     <ion-side-menus>
-        <ion-side-menu-content>
+        <ion-side-menu-content style="background-color:#fee8c1;">
             
             <ion-content>
                 <ion-list>
                     <ion-slide-box>
                         
                         <ion-slide ng-repeat="sliderimages in $root.buttoncontent.elements[0].images">
-                            <img src={{sliderimages.url}} style="width:100%;height:auto;max-height: 40%;min-width:100%"/>
+                            <!--<img src="{{sliderimages.url}}" style="width:100%;height:auto;max-height: 40%;min-width:100%"/>-->
+
+                            <div style="height: 370px;background-image: url('{{sliderimages.url}}');background-size: cover;background-repeat: no-repeat;background-position: 40% 40%;"></div>
                         </ion-slide>
                     </ion-slide-box>
                 </ion-list><br />
@@ -30,20 +34,20 @@
             </ion-content>
             <div class="bar bar-footer" style="background:none;" ng-show="iflogin">
                 <h1 class="title"> </h1>
-                <button class="button button-small ion-ios7-plus-outline button-royal" ng-click="editsliderpage()" style="margin-top:4px;">
+                <button class="button button-small ion-ios7-plus-outline button-positive" ng-click="editsliderpage()" style="margin-top:4px;">
                     &nbsp;&nbsp;Edit&nbsp;&nbsp;
                 </button>
             </div>
         </ion-side-menu-content>
         
-        <ion-side-menu side="left">
+        <ion-side-menu side="left" style="background-color:#fee8c1;">
             
             <ion-content class="has-subfooter">
                 <ion-list ng-show="mainmenus">
                     <ion-item menu-close ng-click="clickmainmenu(items);" ng-repeat="items in $root.allbuttons">
                         <div class="row">
                             <div class="col col-90">
-                                {{items.title | capitalize}}
+                                {{items.title}}
                             </div>
                             <div class="col col-10" ng-if="$root.mainbuttonid==items.id">
                                 <i class="icon ion-ios-circle-filled custom-selectmainmenu"></i>
@@ -56,7 +60,7 @@
                     <ion-item menu-close ng-click="deletethisbutton(items);" ng-repeat="items in $root.allbuttons">
                        <div class="row">
                            <div class="col col-90">
-                               {{items.title | capitalize}}
+                               {{items.title}}
                            </div>
                            <div class="col col-10">
                                <i class="icon ion-trash-a custom-icon"></i>
@@ -69,7 +73,7 @@
                         
                         <div class="row">
                             <div class="col col-90">
-                                {{items.title | capitalize}}
+                                {{items.title}}
                             </div>
                             <div class="col col-10">
                                 <i class="icon ion-edit custom-icon"></i>
@@ -87,7 +91,7 @@
                         
                         <div class="row">
                             <div class="col col-90" ng-click="editthisbutton(items)">
-                                {{items.title | capitalize}}
+                                {{items.title}}
                             </div>
                            
                             <div class="col col-10">
@@ -103,12 +107,12 @@
             
             <div class="bar bar-subfooter" ng-show="iflogin">
                 <div class="row" style="padding:0;">
-                    <div style="width:40%;">
-                        <button class="button button-small ion-ios-plus-outline button-assertive" style="width:100%;" ng-click="addbutton();">Add</button>
+                    <div style="width:45%;">
+                        <button class="button button-small ion-ios-plus-outline button-positive" style="width:100%;" ng-click="addbutton();">&nbsp;Add Menu</button>
                     </div>
-                    <div style="width:20%;"></div>
-                    <div style="width:40%;">
-                        <button class="button button-small ion-log-in button-balanced" style="width:100%;" on-touch="logout();">Log Out</button>
+                    <div style="width:10%;"></div>
+                    <div style="width:45%;">
+                        <button class="button button-small ion-log-in button-positive" style="width:100%;" on-touch="logout();">&nbsp;Log Out</button>
                     </div>
                 </div>
             </div>
@@ -116,35 +120,35 @@
             
             <div class="bar bar-subfooter" ng-show="ifloginwithreorder">
                 <div class="row" style="padding:0;">
-                    <div style="width:40%;">
-                        <button class="button button-small ion-ios-drag button-assertive" style="width:100%;" ng-click="reorder();">Reorder</button>
+                    <div style="width:45%;">
+                        <button class="button button-small ion-ios-drag button-positive" style="width:100%;" ng-click="reorder();">&nbsp;Reorder Menu</button>
                     </div>
-                    <div style="width:20%;"></div>
-                    <div style="width:40%;">
-                        <button class="button button-small ion-log-in button-balanced" style="width:100%;" on-touch="logout();">Log Out</button>
+                    <div style="width:10%;"></div>
+                    <div style="width:45%;">
+                        <button class="button button-small ion-log-in button-positive" style="width:100%;" on-touch="logout();">&nbsp;Log Out</button>
                     </div>
                 </div>
             </div>
             
             <div class="bar bar-footer" ng-show="iflogin">
                 <div class="row" style="padding:0;">
-                    <div style="width:40%;">
-                        <button class="button button-small ion-edit button-assertive" style="width:100%;" ng-click="editbuttons();">Edit</button>
+                    <div style="width:45%;">
+                        <button class="button button-small ion-edit button-positive" style="width:100%;" ng-click="editbuttons();">&nbsp;Edit Menu</button>
                     </div>
-                    <div style="width:20%;"></div>
-                    <div style="width:40%;">
-                        <button class="button button-small ion-ios-close-outline button-balanced" style="width:100%;" on-touch="deletebuttons();">Delete</button>
+                    <div style="width:10%;"></div>
+                    <div style="width:45%;">
+                        <button class="button button-small ion-ios-close-outline button-positive" style="width:100%;" on-touch="deletebuttons();">&nbsp;Delete Menu</button>
                     </div>
                 </div>
             </div>
             
             <div class="bar bar-footer" ng-show="ifnotlogin">
                 <div class="row" style="padding:0;">
-                    <div style="width:40%;">
-                        <button class="button button-small ion-log-in button-balanced" style="width:100%;" on-touch="gologin();">Log In</button>
+                    <div style="width:45%;">
+                        <button class="button button-small ion-log-in button-positive" style="width:100%;" on-touch="gologin();">&nbsp;Log In</button>
                     </div>
-                    <div style="width:20%;"></div>
-                    <div style="width:40%;">
+                    <div style="width:10%;"></div>
+                    <div style="width:45%;">
                         
                     </div>
                 </div>
