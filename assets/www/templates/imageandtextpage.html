@@ -1,153 +1,34 @@
 
+
 <ion-view>
-    <ion-nav-title class="custom-white">
+<ion-nav-title>
         {{mainbuttontitle}}
-    </ion-nav-title>
+</ion-nav-title>
     <ion-nav-buttons side="left">
-        <button menu-toggle="left" class="button button-icon button-clear ion-navicon nav-icon" on-touch="toggleLeftSideMenu()"></button>
+        <button menu-toggle="left" class="button button-icon icon ion-navicon nav-icon" on-touch="toggleLeftSideMenu()"></button>
     </ion-nav-buttons>
-    
     <ion-nav-buttons side="right">
-        <!--<i class="icon ion-ios-plus-outline custom-addapp" ui-sref="appcreate" ng-show="iflogin"></i>-->
-        <!--<button class="button button-assertive" ui-sref="appcreate" ng-show="iflogin">
-        New App
-      </button>-->
+        <!--        <button class="button button-icon ion-more" ng-click="openPopoversermons($event)"></button>-->
     </ion-nav-buttons>
     <ion-side-menus>
         <ion-side-menu-content style="background-color:#fee8c1;">
             
-            <ion-content class="padding">
+            <ion-content>
 
+                <h4 style="font-weight: bold;">{{$root.buttoncontent.elements[0].title}}</h4>
+                <!--<img src="{{$root.buttoncontent.elements[0].images[0].url}}" style="width:100%;height:auto;max-height: 33%;">-->
 
+                <div style="height: 220px;background-image: url('{{$root.buttoncontent.elements[0].images[0].url}}');background-size: cover;background-repeat: no-repeat;background-position: 50% 50%;"></div>
 
-
-                <form name="checkoutForm" stripe-form="stripeCallback" ng-submit="onSubmit()" data-abide>
-
-	<div ng-if="processing" us-spinner></div>
-
-
-		<h3>User Information</h3>
-
-		<div class="list list-inset">
-                <label class="item item-input">
-                <input ng-model="donationgetvalues.name" type="text" placeholder="Name">
-                </label>
-                <label class="item item-input">
-                <input ng-model="donationgetvalues.address" type="text" placeholder="Address">
-                </label>
-                <label class="item item-input">
-                <input ng-model="donationgetvalues.email" type="email" placeholder="Email">
-                </label>
-                <label class="item item-input">
-                <input ng-model="donationgetvalues.mobile" type="number" placeholder="Mobile">
-                </label>
-        </div>
-<!-- 
-			<label class="large-12 columns">Name
-				
-			</label>
-
-			<label class="large-12 columns">Address
-				
-			</label>
-			<label class="large-12 columns">Email
-				<input ng-model="email" type="email" placeholder="Address">
-			</label>
-			<label class="large-12 columns">Mobile
-				<input ng-model="number" type="number" placeholder="Address">
-			</label> -->
-		
-	
-
-	
-		<h3>Payment Information</h3>
-
-			<!-- <div class="large-6 columns" ng-class="{error: checkoutForm.number.$invalid}">
-				<label>Amount
-					<input ng-model="amount" 
-					       placeholder="Amount" type="number"/>
-				</label>
-				<small class="error">Invalid card number</small>
-			</div> -->
-
-
-            <div class="list list-inset">
-                <label class="item item-input">
-                <input ng-model="donationgetvalues.amount" name="amount" type="number" placeholder="Amount"/>
-                </label>
-                <label class="item item-input">
-                <input ng-model="number" name="number" payments-format="card" payments-validate="card"
-                           placeholder="Credit Card Number" type="text"/>
-                </label>
-                <label class="item item-input">
-                <input ng-model="expiry" name="expiry" payments-format="expiry" payments-validate="expiry"
-                           placeholder="Expiry" type="text"/>
-                </label>
-                <label class="item item-input">
-                <input ng-model="cvc" name="cvc" payments-format="cvc" payments-validate="cvc"
-                           placeholder="CVC" type="text"/>
-                </label>
-        </div>
-
-			<!--<div class="large-6 columns" ng-class="{error: checkoutForm.number.$invalid}">
-				<label>Card Information
-					<input ng-model="number" name="number" payments-format="card" payments-validate="card"
-					       placeholder="Card Number" type="text"/>
-				</label>
-				<small class="error">Invalid card number</small>
-			</div>
-			<div class="large-3 columns" ng-class="{error: checkoutForm.expiry.$invalid}">
-				<label>Expiry
-					<input ng-model="expiry" name="expiry" payments-format="expiry" payments-validate="expiry"
-					       placeholder="Expiry" type="text"/>
-				</label>
-				<small class="error">Invalid date.</small>
-			</div>
-			<div class="large-3 columns" ng-class="{error: checkoutForm.cvc.$invalid}">
-				<label>CVC
-					<input ng-model="cvc" name="cvc" payments-format="cvc" payments-validate="cvc"
-					       placeholder="CVC" type="text"/>
-				</label>
-				<small class="error">Invalid CVC.</small>
-			</div>
-
-			<div class="large-12 columns">
-				<strong>
-					Amount to pay: 220$
-				</strong>
-			</div>-->
-		
-	
-
-	<!-- <alert ng-if="stripeError" type="'alert'" close="hideAlerts()">
-		Stripe returned an error: 
-	</alert>
-
-	<alert ng-if="stripeToken" close="hideAlerts()">
-		Stripe successfully acquired! Token: 
-	</alert> -->
-
-	<!-- <div class="row">
-		<div class="col col-50">
-			<button class="cancel" ng-click="$dismiss();">Cancel</button>
-        </div>
-        <div class="col col-50">			
-			<button type="submit" ng-disabled="checkoutForm.$invalid">Place Order</button>
-		</div>	
-		
-	</div> -->
-
-    <button type="submit" ng-disabled="checkoutForm.$invalid" class="button button-full button-positive">
-                        Pay
-    </button>
-
-</form><br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br />
+                    <div ng-bind-html="$root.buttoncontent.elements[0].text" class="padding" style="text-align: justify;
+    text-justify: inter-word;">
+                        
+                    </div>
+                    
             </ion-content>
             <div class="bar bar-footer" style="background:none;" ng-show="iflogin">
                 <h1 class="title"> </h1>
-                <button class="button button-small ion-ios7-plus-outline button-positive" ng-click="editsliderpage()" style="margin-top:4px;">
+                <button class="button button-small ion-ios7-plus-outline button-positive" ng-click="editimageandtextpage($root.buttoncontent.elements[0].images[0].url)" style="margin-top:4px;">
                     &nbsp;&nbsp;Edit&nbsp;&nbsp;
                 </button>
             </div>
@@ -171,14 +52,14 @@
                 
                 <ion-list ng-show="deletemenus">
                     <ion-item menu-close ng-click="deletethisbutton(items);" ng-repeat="items in $root.allbuttons">
-                       <div class="row">
-                           <div class="col col-90">
-                               {{items.title}}
-                           </div>
-                           <div class="col col-10">
-                               <i class="icon ion-trash-a custom-icon"></i>
-                           </div>
-                       </div>
+                        <div class="row">
+                            <div class="col col-90">
+                                {{items.title}}
+                            </div>
+                            <div class="col col-10">
+                                <i class="icon ion-trash-a custom-icon"></i>
+                            </div>
+                        </div>
                     </ion-item>
                 </ion-list>
                 <ion-list ng-show="editmenus">
@@ -206,7 +87,7 @@
                             <div class="col col-90" ng-click="editthisbutton(items)">
                                 {{items.title}}
                             </div>
-                           
+                            
                             <div class="col col-10">
                                 <ion-reorder-button class="ion-navicon"
                                     on-reorder="moveItem(items, $fromIndex, $toIndex)">
@@ -271,8 +152,4 @@
     </ion-side-menus>
     
 </ion-view>
-
-
-
-
 

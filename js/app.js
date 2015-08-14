@@ -4,42 +4,21 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-
-
-
-
-
-
-
-var app=angular.module('starter', ['ionic', 'starter.controllers', 'ui.tinymce', 'angularPayments'])
+var app=angular.module('starter', ['ionic', 'starter.controllers', 'ui.tinymce','ngSanitize',
+            'com.2fdevs.videogular'])
 
 app.run(function($ionicPlatform, $ionicPopup, $interval, $rootScope, $location, $ionicLoading) {
 			
 			$ionicPlatform.registerBackButtonAction(function () {
 			
-                                            navigator.notification.confirm('This will exit from the app, Do you want to continue?', function (button) {
+                                            navigator.notification.confirm('Are you sure you want to Exit?', function (button) {
                                             if (button == 1) {
           									ionic.Platform.exitApp();
                                             }else{
                                             }
-                                            },'Church App',["OK","CANCEL"]);
+                                            },'Please Confirm',["OK","CANCEL"]);
                                             
                                             }, 100);
-                                            
-                                            
-                                            
-//   document.addEventListener("offline", onOffline, false);
-// 
-// function onOffline() {
-//  
-//            var alertPopup = $ionicPopup.alert({
-//      	   title: 'Network Failure',
-//      	   template: 'Please Check Your Internet Connection'
-//    									});
-//    		   alertPopup.then(function(res) {
-//      
-//    									});    
-// }
                                                            
                                                       
                                                            
@@ -103,40 +82,11 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
           templateUrl: "templates/textlistaddpage.html",
           controller: 'textlistaddpageCtrl'
                                 })
-                                
    $stateProvider.state('textlisteditpage', {
            url: "/textlisteditpage",
            templateUrl: "templates/textlisteditpage.html",
            controller: 'textlisteditpageCtrl'
                                 })
-                                
-    $stateProvider.state('programeventdetailspage', {
-           url: "/programeventdetailspage",
-           templateUrl: "templates/programeventdetailspage.html",
-           controller: 'programeventdetailspageCtrl'
-                                })                             
-
-$stateProvider.state('biblequotespagecreate', {
-          url: "/biblequotespagecreate",
-          templateUrl: "templates/biblequotespagecreate.html",
-          controller: 'biblequotespagecreateCtrl'
-                                })
-
-$stateProvider.state('biblequotespage', {
-           url: "/biblequotespage",
-           templateUrl: "templates/biblequotespage.html",
-           controller: 'biblequotespageCtrl'
-                                })  
-  $stateProvider.state('biblequotesaddpage', {
-          url: "/biblequotesaddpage",
-          templateUrl: "templates/biblequotesaddpage.html",
-          controller: 'biblequotesaddpageCtrl'
-                                })                                                         
-  $stateProvider.state('biblequoteseditpage', {
-           url: "/biblequoteseditpage",
-           templateUrl: "templates/biblequoteseditpage.html",
-           controller: 'biblequoteseditpageCtrl'
-                                })                                                           
   $stateProvider.state('imageswithdescriptionpagecreate', {
           url: "/imageswithdescriptionpagecreate",
           templateUrl: "templates/imageswithdescriptionpagecreate.html",
@@ -190,21 +140,11 @@ $stateProvider.state('videowithdescriptionpage', {
       templateUrl: "templates/videowithdescriptionpage.html",
       controller: 'videowithdescriptionpageCtrl'
                                 })
-$stateProvider.state('videowithdescriptioneditpage', {
-      url: "/videowithdescriptioneditpage",
-      templateUrl: "templates/videowithdescriptioneditpage.html",
-      controller: 'videowithdescriptioneditpageCtrl'
-                                })                                
 $stateProvider.state('appcreate', {
       url: "/appcreate",
       templateUrl: "templates/appcreate.html",
       controller: 'appcreateCtrl'
-                                }) 
-$stateProvider.state('donationpage', {
-      url: "/donationpage",
-      templateUrl: "templates/donationpage.html",
-      controller: 'donationpageCtrl'
-                                })                                                                  
+                                })                                
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/home');
 });

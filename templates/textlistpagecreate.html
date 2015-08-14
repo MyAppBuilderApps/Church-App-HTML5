@@ -1,9 +1,6 @@
-<ion-view>
-	<ion-nav-title>
-        {{mainbuttontitle | capitalize}}
-    </ion-nav-title>
+<ion-view view-title={{mainbuttontitle}}>
     <ion-nav-buttons side="left">
-        <button menu-toggle="left" class="button button-icon icon ion-android-arrow-back nav-icon" ng-click="backtextlistpage()"></button>
+        <button menu-toggle="left" class="button button-icon icon ion-android-arrow-back" ng-click="backtextlistpage()"></button>
     </ion-nav-buttons>
     <ion-content class="padding">
         <label class="item item-input">

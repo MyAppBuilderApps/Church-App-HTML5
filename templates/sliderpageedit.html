@@ -1,9 +1,6 @@
-<ion-view>
-	<ion-nav-title>
-        {{mainbuttontitle | capitalize}}
-    </ion-nav-title>
+<ion-view view-title={{mainbuttontitle}}>
     <ion-nav-buttons side="left">
-        <button menu-toggle="left" class="button button-icon icon ion-android-arrow-back nav-icon" ng-click="backslideredit()"></button>
+        <button menu-toggle="left" class="button button-icon icon ion-android-arrow-back" ng-click="backslideredit()"></button>
     </ion-nav-buttons>
     <ion-content class="padding">
         <form  ng-submit="updateslidertext()">
@@ -12,50 +9,29 @@
                     </label>
             
             
-            <textarea style="height:30%;"  ng-model="updateslidervalues.text" ui-tinymce="tinymceOptions" id="chktxtarea"></textarea>
+            <textarea style="height:30%;"  ng-model="updateslidervalues.text" ui-tinymce="tinymceOptions"></textarea>
             
             <button type="submit" class="button button-full button-positive" on-touch="updateslidertext()">
                 Update
             </button>
         </form>
         
-        <!-- <div align="center" ng-click="showActionsheet();">
+        <div align="center" ng-click="showActionsheet();">
             <img src="img/btn_image.png"  id="selectedimage" style="width:114px;height:114px;" />
-        </div> -->
-
-
-        <div class="row" style="margin-left:20%;">
-                
-                <div style="width:40%;"> 
-                 <!-- <div style="background-color:#6d6d6d;border:solid 1px #d2d2d7;color:white;">
-                    
-                    <input  type="file"  id="editimage" name="editimage" title="Choose" accept="image/*" style="opacity:0;"/>
-                    <div align="center">Choose</div>
-                </div> -->
-                <label class="fileContainer" style="margin-top:10%;">
-                    Choose Image
-                    <input type="file" id="addimage" name="addimage" title="Choose" accept="image/*"/>
-                </label>
-                <div style="width:20%;"></div>
-                </div>
-                <div style="width:40%;margin-left:5%;">
-                    <img src="img/btn_image.png" id="selectedimage" style="width:114px;height:114px;" />
-                    
-                </div> 
-       </div>
+        </div>
         
         <div class="button button-full button-positive" on-touch="addslideimages()">
-            Add Image
+            Create
         </div>
         <div class="list">
             <div ng-repeat="item in imagedeletearray">
                 <div class="row">
-                    <div class="col-90">
-                        <img src={{item.url}} style="width:100%;height:auto;"/>
+                    <div class="col">
+                        <img src={{item.url}} style="width:100%;height:auto;max-height: 20%;"/>
                     </div>
                     
-                    <div class="col-10">
-                        <button class="button button-assertive button-outline" on-touch="deletesliderimage(item.id);" style="margin-top:50%;left:58%;">
+                    <div class="col">
+                        <button class="button button-assertive button-outline" on-touch="deletesliderimage(item.id);" style="margin-top:8.5%;left:58%;">
                             <i class="icon ion-trash-a " ></i>
                         </button>
                     </div>

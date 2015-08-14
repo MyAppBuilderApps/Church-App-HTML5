@@ -1,4 +1,4 @@
-**Church App**
+**Church WEB App**
 
 This is used as the default app template to create Church App. This Mobile friendly design makes it easy for users to create a new Church App.
 
