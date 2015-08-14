@@ -1,0 +1,2 @@
+/Users/nuatransmedia/Church/platforms/android/build/intermediates/classes/debug
+/Users/nuatransmedia/Church/platforms/android/build/intermediates/pre-dexed/debug/classes-aa97d85dfb02302543b62b44d196745a1c1b7421.jar

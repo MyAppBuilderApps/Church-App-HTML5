@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/nuatransmedia/Church/platforms/android/build/intermediates/exploded-aar/android/CordovaLib/unspecified/debug/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="56dede7b98509f4e2334bd9388acc381dc767962">
+        <dex dex="/Users/nuatransmedia/Church/platforms/android/build/intermediates/pre-dexed/debug/classes-aa97d85dfb02302543b62b44d196745a1c1b7421.jar" />
+    </item>
+
+</items>
